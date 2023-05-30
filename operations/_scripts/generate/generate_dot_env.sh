@@ -2,8 +2,10 @@
 
 set -e
 
+echo "In $(basename $0)"
 
-echo "In generate_dot_env.sh"
+ghv_path="${GITHUB_ACTION_PATH}/operations/deployment/ansible/ghv.env"
+ghs_path="${GITHUB_ACTION_PATH}/operations/deployment/ansible/ghs.env"
 
-echo "$GHV_ENV" > "${GITHUB_ACTION_PATH}/operations/deployment/ansible/ghv.env"
-echo "$GHS_ENV" > "${GITHUB_ACTION_PATH}/operations/deployment/ansible/ghs.env"
+touch $ghv_path && cat "$GHV_ENV" > $ghv_path
+touch $ghs_path && cat "$GHS_ENV" > $ghs_path

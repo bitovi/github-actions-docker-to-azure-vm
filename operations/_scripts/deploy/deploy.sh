@@ -26,16 +26,16 @@ $GITHUB_ACTION_PATH/operations/_scripts/generate/generate_provider.sh
 $GITHUB_ACTION_PATH/operations/_scripts/generate/generate_tf_vars.sh
 
 # Generate dot_env
-$GITHUB_ACTION_PATH/operations/_scripts/generate/generate_dot_env.sh
+# $GITHUB_ACTION_PATH/operations/_scripts/generate/generate_dot_env.sh
 
 # Generate app repo
-$GITHUB_ACTION_PATH/operations/_scripts/generate/generate_app_repo.sh
+# $GITHUB_ACTION_PATH/operations/_scripts/generate/generate_app_repo.sh
 
 # Generate bitops config
 $GITHUB_ACTION_PATH/operations/_scripts/generate/generate_bitops_config.sh
 
 # Generate Ansible playbook
-$GITHUB_ACTION_PATH/operations/_scripts/generate/generate_ansible_playbook.sh
+# $GITHUB_ACTION_PATH/operations/_scripts/generate/generate_ansible_playbook.sh
 
 # List terraform folder
 echo "ls -al $GITHUB_ACTION_PATH/operations/deployment/terraform/"
@@ -47,8 +47,8 @@ cat "$GITHUB_ACTION_PATH/operations/deployment/terraform/bitops.config.yaml"
 
 echo "cat GITHUB_ACTION_PATH/operations/deployment/terraform/provider.tf"
 cat "$GITHUB_ACTION_PATH/operations/deployment/terraform/provider.tf"
-echo "ls GITHUB_ACTION_PATH/operations/deployment/ansible/app/${GITHUB_REPO_NAME}"
-ls "$GITHUB_ACTION_PATH/operations/deployment/ansible/app/${GITHUB_REPO_NAME}"
+# echo "ls GITHUB_ACTION_PATH/operations/deployment/ansible/app/${GITHUB_REPO_NAME}"
+# ls "$GITHUB_ACTION_PATH/operations/deployment/ansible/app/${GITHUB_REPO_NAME}"
 
 TERRAFORM_COMMAND=""
 TERRAFORM_DESTROY=""
@@ -60,7 +60,8 @@ fi
 echo "::endgroup::"
 
 if [[ $SKIP_BITOPS_RUN == "true" ]]; then
-  exit 1
+  echo "SKIP_BITOPS_RUN is true, skipping BitOps execution"
+  exit 0
 fi
 
 echo "::group::BitOps Excecution"  
@@ -86,4 +87,5 @@ bitovi/bitops:dev
 BITOPS_RESULT=$?
 echo "::endgroup::"
 
-exit $BITOPS_RESULT
+# exit $BITOPS_RESULT
+echo result: $BITOPS_RESULT

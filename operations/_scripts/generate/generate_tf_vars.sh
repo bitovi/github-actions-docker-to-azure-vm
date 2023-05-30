@@ -2,7 +2,7 @@
 
 set -e
 
-echo "In generate_tf_vars.sh"
+echo "In $(basename $0)"
 
 # convert 'a,b,c'
 # to '["a","b","c"]'
@@ -68,18 +68,10 @@ app_repo_name="app_repo_name = \"${GITHUB_REPO_NAME}\""
 app_branch_name="app_branch_name = \"${GITHUB_BRANCH_NAME}\""
 app_install_root="app_install_root = \"/home/ubuntu\""
 security_group_name="security_group_name = \"${GITHUB_IDENTIFIER}\""
-aws_resource_identifier="aws_resource_identifier = \"${GITHUB_IDENTIFIER}\""
-aws_resource_identifier_supershort="aws_resource_identifier_supershort = \"${GITHUB_IDENTIFIER_SS}\""
-aws_security_group_name_pg="aws_security_group_name_pg = \"${GITHUB_IDENTIFIER}-pg\""
+azure_resource_identifier="azure_resource_identifier = \"${GITHUB_IDENTIFIER}\""
+azure_resource_identifier_supershort="azure_resource_identifier_supershort = \"${GITHUB_IDENTIFIER_SS}\""
 
 # Special cases
-
-ec2_iam_instance_profile=
-if [ -n "${EC2_INSTANCE_PROFILE}" ]; then
-  ec2_iam_instance_profile="ec2_iam_instance_profile =\"${EC2_INSTANCE_PROFILE}\""
-else
-  ec2_iam_instance_profile="ec2_iam_instance_profile =\"${GITHUB_IDENTIFIER}\""
-fi
 
 sub_domain_name=
 if [ -n "$SUB_DOMAIN" ]; then
@@ -87,13 +79,6 @@ if [ -n "$SUB_DOMAIN" ]; then
 else
   sub_domain_name="sub_domain_name = \"$GITHUB_IDENTIFIER\""
 fi
-
-aws_postgres_subnets=
-if [ -n "${AWS_POSTGRES_SUBNETS}" ]; then
-  aws_postgres_subnets="aws_postgres_subnets = \"$(comma_str_to_tf_array $AWS_POSTGRES_SUBNETS)\""
-fi
-echo "AWS Postgres subnets: $aws_postgres_subnets"
-
 
 #-- Application --#
 app_port=$(generate_var app_port $APP_PORT)
@@ -110,49 +95,21 @@ lb_access_bucket_name=$(generate_var lb_access_bucket_name $LB_LOGS_BUCKET)
 #-- Security Groups --#
 #security_group_name=$(generate_var security_group_name $SECURITY_GROUP_NAME) - Fixed
 #-- EC2 --#
-ec2_instance_type=$(generate_var ec2_instance_type $EC2_INSTANCE_TYPE)
+# ec2_instance_type=$(generate_var ec2_instance_type $EC2_INSTANCE_TYPE)
 # ec2_iam_instance_profile=$(generate_var ec2_iam_instance_profile EC2_INSTANCE_PROFILE - Special case
 #-- AWS --#
-# aws_resource_identifier=$(generate_var aws_resource_identifier AWS_RESOURCE_IDENTIFIER - Fixed
-# aws_resource_identifier_supershort=$(generate_var aws_resource_identifier_supershort AWS_RESOURCE_IDENTIFIER_SUPERSHORT - Fixed
-aws_secret_env=$(generate_var aws_secret_env $AWS_SECRET_ENV)
-aws_ami_id=$(generate_var aws_ami_id $AWS_AMI_ID)
+# azure_resource_identifier=$(generate_var azure_resource_identifier azure_RESOURCE_IDENTIFIER - Fixed
+# azure_resource_identifier_supershort=$(generate_var azure_resource_identifier_supershort azure_RESOURCE_IDENTIFIER_SUPERSHORT - Fixed
+# aws_secret_env=$(generate_var aws_secret_env $AWS_SECRET_ENV)
+# aws_ami_id=$(generate_var aws_ami_id $AWS_AMI_ID)
 #-- Certificates --#
 # sub_domain_name=$(generate_var sub_domain_name $SUB_DOMAIN_NAME)  - Special case
 domain_name=$(generate_var domain_name $DOMAIN_NAME)
 root_domain=$(generate_var root_domain $ROOT_DOMAIN)
-cert_arn=$(generate_var cert_arn $CERT_ARN)
-create_root_cert=$(generate_var create_root_cert $CREATE_ROOT_CERT)
-create_sub_cert=$(generate_var create_sub_cert $CREATE_SUB_CERT)
-no_cert=$(generate_var no_cert $NO_CERT)
-#-- EFS --#
-if [[ $(alpha_only "$AWS_EFS_CREATE") == true ]] || [[ $(alpha_only "$AWS_EFS_CREATE_HA") == true ]] || [[ $AWS_EFS_MOUNT_ID != "" ]]; then
-  aws_create_efs=$(generate_var aws_create_efs $AWS_CREATE_EFS)
-  aws_create_ha_efs=$(generate_var aws_create_ha_efs $AWS_CREATE_HA_EFS)
-  aws_create_efs_replica=$(generate_var aws_create_efs_replica $AWS_CREATE_EFS_REPLICA)
-  aws_enable_efs_backup_policy=$(generate_var aws_enable_efs_backup_policy $AWS_ENABLE_EFS_BACKUP_POLICY)
-  aws_efs_zone_mapping=$(generate_var aws_efs_zone_mapping $AWS_EFS_ZONE_MAPPING)
-  aws_efs_transition_to_inactive=$(generate_var aws_efs_transition_to_inactive $AWS_EFS_TRANSITION_TO_INACTIVE)
-  aws_replication_configuration_destination=$(generate_var aws_replication_configuration_destination $AWS_EFS_REPLICA_DESTINATION)
-  aws_mount_efs_id=$(generate_var aws_mount_efs_id $AWS_MOUNT_EFS_ID)
-  aws_mount_efs_security_group_id=$(generate_var aws_mount_efs_security_group_id $AWS_MOUNT_EFS_SECURITY_GROUP_ID)
-fi
-#-- RDS --#
-if [[ $(alpha_only "$AWS_POSTGRES_ENABLE") == true ]]; then
-  # aws_security_group_name_pg=$(generate_var aws_security_group_name_pg $AWS_SECURITY_GROUP_NAME_PG) - Fixed
-  aws_enable_postgres=$(generate_var aws_enable_postgres $AWS_ENABLE_POSTGRES)
-  aws_postgres_engine=$(generate_var aws_postgres_engine $AWS_POSTGRES_ENGINE)
-  aws_postgres_engine_version=$(generate_var aws_postgres_engine_version $AWS_POSTGRES_ENGINE_VERSION)
-  aws_postgres_database_group_family=$(generate_var aws_postgres_database_group_family $AWS_POSTGRES_DATABASE_GROUP_FAMILY)
-  aws_postgres_instance_class=$(generate_var aws_postgres_instance_class $AWS_POSTGRES_INSTANCE_CLASS)
-  aws_postgres_database_name=$(generate_var aws_postgres_database_name $AWS_POSTGRES_DATABASE_NAME)
-  aws_postgres_database_port=$(generate_var aws_postgres_database_port $AWS_POSTGRES_DATABASE_PORT)
-  aws_postgres_database_protection=$(generate_var aws_postgres_database_protection $AWS_POSTGRES_DATABASE_PROTECTION)
-  aws_postgres_database_final_snapshot=$(generate_var aws_postgres_database_final_snapshot $AWS_POSTGRES_DATABASE_FINAL_SNAPSHOT)
-fi
-# aws_postgres_subnets=$(generate_var aws_postgres_subnets $AWS_POSTGRES_SUBNETS) - Special case
-#-- Security Manager --#
-create_keypair_sm_entry=$(generate_var create_keypair_sm_entry $CREATE_KEYPAIR_SM_ENTRY)
+# cert_arn=$(generate_var cert_arn $CERT_ARN)
+# create_root_cert=$(generate_var create_root_cert $CREATE_ROOT_CERT)
+# create_sub_cert=$(generate_var create_sub_cert $CREATE_SUB_CERT)
+# no_cert=$(generate_var no_cert $NO_CERT)
 #-- Tags --#
 additional_tags=$(generate_var additional_tags $ADDITIONAL_TAGS)
 #-- ANSIBLE --##
@@ -163,8 +120,9 @@ ec2_volume_size=$(generate_var ec2_volume_size $EC2_VOLUME_SIZE)
 
 
 # -------------------------------------------------- #
+# use heredoc to create the terraform.tfvars file
 
-echo "
+cat << TFVARS > "${GITHUB_ACTION_PATH}/operations/deployment/terraform/terraform.tfvars"
 #-- Application --#
 $app_port
 $ops_repo_environment
@@ -183,53 +141,14 @@ $lb_access_bucket_name
 #-- Security Groups --#
 $security_group_name
 
-#-- EC2 --#
-$ec2_instance_type
-$ec2_instance_profile
-$ec2_iam_instance_profile
-$ec2_volume_size
-
 #-- AWS --#
-$aws_resource_identifier
-$aws_resource_identifier_supershort
-$aws_secret_env
-$aws_ami_id
+$azure_resource_identifier
+$azure_resource_identifier_supershort
 
 #-- Certificates --#
 $sub_domain_name
 $domain_name
 $root_domain
-$cert_arn
-$create_root_cert
-$create_sub_cert
-$no_cert
-
-#-- EFS --#
-$aws_create_efs
-$aws_create_ha_efs
-$aws_create_efs_replica
-$aws_enable_efs_backup_policy
-$aws_efs_zone_mapping
-$aws_efs_transition_to_inactive
-$aws_replication_configuration_destination
-$aws_mount_efs_id
-$aws_mount_efs_security_group_id
-
-#-- RDS --#
-$aws_security_group_name_pg
-$aws_enable_postgres
-$aws_postgres_engine
-$aws_postgres_engine_version
-$aws_postgres_database_group_family
-$aws_postgres_instance_class
-$aws_postgres_database_name
-$aws_postgres_database_port
-$aws_postgres_subnets
-$aws_postgres_database_protection
-$aws_postgres_database_final_snapshot
-
-#-- Security Manager --#
-$create_keypair_sm_entry
 
 #-- Tags --#
 $additional_tags
@@ -238,5 +157,4 @@ $additional_tags
 $application_mount_target
 $efs_mount_target
 $data_mount_target
-
-" > "${GITHUB_ACTION_PATH}/operations/deployment/terraform/terraform.tfvars"
+TFVARS
