@@ -20,3 +20,4 @@ operations/deployment/terraform/inventory.yaml
 *test*
 
 .vscode/
+operations/_scripts/deploy/deploy.local.sh

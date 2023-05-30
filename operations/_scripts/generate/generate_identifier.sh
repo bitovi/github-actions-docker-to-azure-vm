@@ -11,11 +11,11 @@ else
   GITHUB_BRANCH_NAME=${GITHUB_REF_NAME}
 fi
 
-if [ -z "$AWS_RESOURCE_IDENTIFIER" ]; then
+if [ -z "$azure_resource_identifier" ]; then
   GITHUB_IDENTIFIER="${GITHUB_ORG_NAME}-${GITHUB_REPO_NAME}-${GITHUB_BRANCH_NAME}"
   GITHUB_IDENTIFIER="$($GITHUB_ACTION_PATH/operations/_scripts/generate/shorten_identifier.sh ${GITHUB_IDENTIFIER})"
 else
-  GITHUB_IDENTIFIER="$AWS_RESOURCE_IDENTIFIER"
+  GITHUB_IDENTIFIER="$azure_resource_identifier"
 fi
 
 GITHUB_IDENTIFIER=$(echo $GITHUB_IDENTIFIER | tr '[:upper:]' '[:lower:]' | tr '_' '-' | tr '/' '-')
