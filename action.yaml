@@ -82,27 +82,6 @@ inputs:
     description: 'The size of the volume (in GB) on the AWS Instance'
     required: false
     default: "8"
-
-  
-  # EFS
-  aws_create_efs:
-    description: "Toggle to indicate whether to create and EFS and mount it to the ec2 as a part of the provisioning. Note: The EFS will be managed by the stack and will be destroyed along with the stack"
-  aws_create_ha_efs:
-    description: Toggle to indicate whether the EFS resource should be highly available (target mounts in all available zones within region)
-  aws_create_efs_replica:
-    description: Toggle to indiciate whether a read-only replica should be created for the EFS primary file system
-  aws_enable_efs_backup_policy:
-    description: Toggle to indiciate whether the EFS should have a backup policy, default is `false`
-  aws_efs_zone_mapping:
-    description: Information on Zone Mapping can be found in the [README.md](README.md#efs-zone-mapping)
-  aws_efs_transition_to_inactive:
-    description: Indicates how long it takes to transition files to the IA storage class
-  aws_replication_configuration_destination:
-    description: "AWS Region to target for replication"
-  aws_mount_efs_id:
-    description: ID of existing EFS
-  aws_mount_efs_security_group_id:
-    description: ID of the primary security group used by the existing EFS
   
   # Stack management
   stack_destroy:
@@ -136,45 +115,6 @@ inputs:
   additional_tags:
     description: 'A JSON object of additional tags that will be included on created resources. Example: `{"key1": "value1", "key2": "value2"}`'
     required: false
-   
-  # Secret Manager
-  create_keypair_sm_entry:
-    required: false
-    description: "Generates and manages a secret manager entry that contains the public and private keys created for the ec2 instance."
-    default: false
-    
-  # RDS
-  aws_enable_postgres:
-    description: Set to "true" to enable a postgres database
-    required: false
-  aws_postgres_engine: 
-    description: Which Database engine to use
-    required: false
-  aws_postgres_engine_version:
-    description: Specify Postgres version 
-    required: false
-  aws_postgres_instance_class:
-    description: Define the size of the instances in the DB cluster
-    required: false
-  aws_postgres_subnets:
-    description: 'Specify which subnets to use as a list of strings.  Example: `i-1234,i-5678,i-9101`'
-    required: false
-  aws_postgres_database_name:
-    description: 'Specify a database name. Will be created if it does not exist'
-    required: false
-    # TODO: create another user and point to that instead
-  aws_postgres_database_port:
-    description: 'Postgres database port'
-    required: false
-  aws_postgres_database_group_family:
-    description: 'Postgres database group family'
-    required: false 
-  aws_postgres_database_protection:
-    description: 'Protects the database from deletion.'
-    required: false
-  aws_postgres_database_final_snapshot:
-    description: 'Generates a snapshot of the database before deletion.'
-    required: false
 
   # Ansible
   application_mount_target:
@@ -204,11 +144,12 @@ runs:
         GITHUB_ACTION_PATH: ${{ github.action_path }}
         BITOPS_ENVIRONMENT: deployment
         TERRAFORM_TARGETS: ${{ inputs.targets }}
-        AWS_ACCESS_KEY_ID: ${{ inputs.aws_access_key_id }}
-        AWS_SECRET_ACCESS_KEY: ${{ inputs.aws_secret_access_key }}
-        AWS_SESSION_TOKEN: ${{ inputs.aws_session_token }}
-        AWS_DEFAULT_REGION: ${{ inputs.aws_default_region }}
-        AWS_AMI_ID: ${{ inputs.aws_ami_id }}
+        ARM_CLIENT_ID: ${{ inputs.ARM_CLIENT_ID }}
+        ARM_CLIENT_SECRET: ${{ inputs.ARM_CLIENT_SECRET }}
+        ARM_SUBSCRIPTION_ID: ${{ inputs.ARM_SUBSCRIPTION_ID }}
+        ARM_TENANT_ID: ${{ inputs.ARM_TENANT_ID }}        
+        azure_resource_identifier: ${{ inputs.azure_resource_identifier }}
+        AZURE_DEFAULT_REGION: ${{ inputs.azure_default_region }}
         TF_STATE_BUCKET: ${{ inputs.tf_state_bucket }}
         TF_STATE_BUCKET_DESTROY: ${{ inputs.tf_state_bucket_destroy }}
         REPO_ENV: ${{ inputs.repo_env }}
@@ -218,47 +159,18 @@ runs:
         APP_PORT: ${{ inputs.app_port }}
         LB_PORT: ${{ inputs.lb_port }}
         LB_HEALTHCHECK: ${{ inputs.lb_healthcheck }}
-        EC2_INSTANCE_PROFILE: ${{ inputs.ec2_instance_profile }}
-        EC2_INSTANCE_TYPE: ${{ inputs.ec2_instance_type }}
-        EC2_VOLUME_SIZE: ${{ inputs.ec2_volume_size }}
+        AZURE_VM_SIZE: ${{ inputs.azure_vm_size }}
         STACK_DESTROY: ${{ inputs.stack_destroy }}
-        AWS_RESOURCE_IDENTIFIER: ${{ inputs.aws_resource_identifier }}
         DOMAIN_NAME: ${{ inputs.domain_name }}
         SUB_DOMAIN: ${{ inputs.sub_domain }}
         ROOT_DOMAIN: ${{ inputs.root_domain }}
-        CERT_ARN: ${{ inputs.cert_arn }}
-        CREATE_ROOT_CERT: ${{ inputs.create_root_cert }}
-        CREATE_SUB_CERT: ${{ inputs.create_sub_cert }}
         NO_CERT: ${{ inputs.no_cert }}
         BITOPS_FAST_FAIL: true
         DOCKER_FULL_CLEANUP: ${{ inputs.docker_full_cleanup }}
         APP_DIRECTORY: ${{ inputs.app_directory }}
         APP_DIRECTORY_CLEANUP: ${{ inputs.app_directory_cleanup }}
-        CREATE_KEYPAIR_SM_ENTRY: ${{ inputs.create_keypair_sm_entry }}
         ADDITIONAL_TAGS: ${{ inputs.additional_tags }}
-        AWS_ENABLE_POSTGRES: ${{ inputs.aws_enable_postgres }}
-        AWS_POSTGRES_ENGINE:  ${{ inputs.aws_postgres_engine }}
-        AWS_POSTGRES_ENGINE_VERSION:  ${{ inputs.aws_postgres_engine_version }}
-        AWS_POSTGRES_DATABASE_GROUP_FAMILY: ${{ inputs.aws_postgres_database_group_family }}
-        AWS_POSTGRES_INSTANCE_CLASS: ${{ inputs.aws_postgres_instance_class }}
-        AWS_POSTGRES_SUBNETS: ${{ inputs.aws_postgres_subnets }}
-        AWS_POSTGRES_DATABASE_NAME: ${{ inputs.aws_postgres_database_name }}
-        AWS_POSTGRES_DATABASE_PORT: ${{ inputs.aws_postgres_database_port}}
-        AWS_POSTGRES_DATABASE_PROTECTION: ${{ inputs.aws_postgres_database_protection }}
-        AWS_POSTGRES_DATABASE_FINAL_SNAPSHOT: ${{ inputs.aws_postgres_database_final_snapshot }}
-        AWS_CREATE_EFS: ${{ inputs.aws_create_efs }}
-        AWS_CREATE_HA_EFS: ${{ inputs.aws_create_ha_efs }}
-        AWS_CREATE_EFS_REPLICA: ${{ inputs.aws_create_efs_replica }}
-        AWS_ENABLE_EFS_BACKUP_POLICY: ${{ inputs.aws_enable_efs_backup_policy }}
-        AWS_EFS_ZONE_MAPPING: ${{ inputs.aws_efs_zone_mapping }}
-        AWS_EFS_TRANSITION_TO_INACTIVE: ${{ inputs.aws_efs_transition_to_inactive }}
-        AWS_EFS_REPLICA_DESTINATION: ${{ inputs.aws_replication_configuration_destination }}
-        AWS_MOUNT_EFS_ID: ${{ inputs.aws_mount_efs_id }}
-        AWS_MOUNT_EFS_SECURITY_GROUP_ID: ${{ inputs.aws_mount_efs_security_group_id }}
-        APPLICATION_MOUNT_TARGET: ${{ inputs.application_mount_target }}
-        EFS_MOUNT_TARGET: ${{ inputs.efs_mount_target }}
-        DATA_MOUNT_TARGET: ${{ inputs.data_mount_target }}
-
+     
       run: |
         echo "running operations/_scripts/deploy/deploy.sh"
         $GITHUB_ACTION_PATH/operations/_scripts/deploy/deploy.sh
