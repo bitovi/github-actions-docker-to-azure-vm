@@ -6,10 +6,11 @@
 
 # exit on any error
 set -e
+set -x
 
 success=true
 
-source "$BITOPS_TEMPDIR/_scripts/az_cli_helpers.sh"
+source "$BITOPS_TEMPDIR/deployment/_scripts/az_cli_helpers.sh"
 
 # avoid running this script if the Terraform CLI Action is `destroy`
 terraform_cmd=$(cat $BITOPS_ENVROOT/terraform/bitops.config.yaml | shyaml get-value terraform.cli.stack-action)
