@@ -18,7 +18,11 @@ inputs:
   AZURE_ARM_TENANT_ID:
     description: 'Azure tenant ID'
     required: true
-  
+  AZURE_DEFAULT_REGION:
+    description: 'Azure default region'
+    required: true
+    default: 'eastus'
+
   # Terraform
   tf_state_bucket:
     description: 'Backend Bucket to use for Terraform state. Defaults to `${org}-${repo}-{branch}-tf-state`'
@@ -28,13 +32,13 @@ inputs:
     required: false
     default: 'false'
   azure_resource_identifier:
-    description: 'Set to override the Azurex resource identifier for the deployment.  Defaults to `${org}-{repo}-{branch}`.  Use with destroy to destroy specific resources.'
+    description: 'Set to override the Azure resource identifier for the deployment.  Defaults to `${org}-{repo}-{branch}`.  Use with destroy to destroy specific resources.'
   azure_vm_admin_username:
-    description: 'Set to override the Azurex VM username for the deployment.  Defaults to `ubuntu`.'
+    description: 'Set to override the Azure VM username for the deployment.  Defaults to `ubuntu`.'
     required: true
     default: 'ubuntu'
   azure_vm_admin_password:
-    description: 'Set to override the Azurex VM password for the deployment.  Defaults to `ubuntu`.'
+    description: 'Set to override the Azure VM password for the deployment.  Defaults to `ubuntu`.'
     required: true
     default: 'ubuntu'
   
@@ -130,7 +134,7 @@ runs:
         BITOPS_ENVIRONMENT: deployment
         TERRAFORM_TARGETS: ${{ inputs.targets }}
         ARM_CLIENT_ID: ${{ inputs.AZURE_ARM_CLIENT_ID }}
-        ARM_CLIENT_SECRET: ${{ inputs.AAZURE_RM_CLIENT_SECRET }}
+        ARM_CLIENT_SECRET: ${{ inputs.AZURE_ARM_CLIENT_SECRET }}
         ARM_SUBSCRIPTION_ID: ${{ inputs.AZURE_ARM_SUBSCRIPTION_ID }}
         ARM_TENANT_ID: ${{ inputs.AZURE_ARM_TENANT_ID }}        
         azure_resource_identifier: ${{ inputs.azure_resource_identifier }}
