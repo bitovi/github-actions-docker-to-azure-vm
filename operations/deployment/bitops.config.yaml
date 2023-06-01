@@ -1,0 +1,6 @@
+bitops:
+  deployments:
+    azure:
+      plugin: azure
+    terraform:
+      plugin: terraform
