@@ -1,4 +1,5 @@
 #!/bin/bash
+# shellcheck disable=SC2086
 
 # set -x
 set -e
@@ -7,7 +8,7 @@ echo "::group::In Deploy"
 GITHUB_REPO_NAME=$(echo "$GITHUB_REPOSITORY" | sed 's/^.*\///')
 export GITHUB_REPO_NAME
 
-# Generate buckets identifiers and check them agains AWS Rules 
+# Generate buckets identifiers and check them agains Azure Rules 
 TF_STATE_BUCKET="$($GITHUB_ACTION_PATH/operations/_scripts/generate/generate_buckets_identifiers.sh tf | xargs)"
 export TF_STATE_BUCKET
 
@@ -82,17 +83,14 @@ else
   -e BITOPS_TERRAFORM_COMMAND="$TERRAFORM_COMMAND" \
   -e TERRAFORM_DESTROY="$TERRAFORM_DESTROY" \
   -e ANSIBLE_SKIP_DEPLOY="$ANSIBLE_SKIP_DEPLOY" \
-  -e TF_STATE_BUCKET="$TF_STATE_BUCKET" \
+  -e TF_STATE_BUCKET="$$TF_STATE_BUCKET" \
   -e TF_STATE_BUCKET_DESTROY="$TF_STATE_BUCKET_DESTROY" \
   -e DEFAULT_FOLDER_NAME="_default" \
   -e BITOPS_FAST_FAIL="$BITOPS_FAST_FAIL" \
-  -e GITHUB_REF_NAME="$GITHUB_REF_NAME" \
   -e AZURE_STORAGE_ACCOUNT="$AZURE_STORAGE_ACCOUNT" \
-  -e AZURE_TF_STATE_CONTAINER="$AZURE_TF_STATE_CONTAINER" \
-  -e TF_VAR_azure_location="$TF_VAR_azure_location" \
+  -e AZURE_DEFAULT_REGION="$AZURE_DEFAULT_REGION" \
   -e azure_vm_admin_username="$azure_vm_admin_username" \
   -e azure_vm_admin_password="$azure_vm_admin_password" \
-  -e AZURE_STORAGE_SKU="$AZURE_STORAGE_SKU" \
   -v "$GITHUB_ACTION_PATH/operations:/opt/bitops_deployment" \
   bitovi/bitops:dev
 

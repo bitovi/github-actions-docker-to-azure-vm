@@ -26,34 +26,23 @@ inputs:
   # Terraform
   tf_state_bucket:
     description: 'Backend Bucket to use for Terraform state. Defaults to `${org}-${repo}-{branch}-tf-state`'
-    required: false
+    required: true
   tf_state_bucket_destroy:
     description: 'Force purge and deletion of bucket on destroy. Any file contained there will be destroyed. `stack_destroy` must also be `true`'
     required: false
     default: 'false'
   azure_resource_identifier:
     description: 'Set to override the Azure resource identifier for the deployment.  Defaults to `${org}-{repo}-{branch}`.  Use with destroy to destroy specific resources.'
+    required: true
   azure_vm_admin_username:
     description: 'Set to override the Azure VM username for the deployment.  Defaults to `ubuntu`.'
     required: true
     default: 'ubuntu'
   azure_vm_admin_password:
-    description: 'Set to override the Azure VM password for the deployment.  Defaults to `ubuntu`.'
+    description: 'Set to override the Azure VM password for the deployment.  Defaults to `insecurePasswordABC123@`.'
     required: true
-    default: 'ubuntu'
-  
-  # ENV files
-  repo_env:
-    description: 'File containing environment variables to be used with the app'
-    required: false
-    default: 'repo_env'
-  dot_env:
-    description: '`.env` file to be used with the app from Github secrets'
-    required: false
-  ghv_env:
-    description: '`.env` file to be used with the app from Github variables'
-    required: false
-  
+    default: 'insecurePasswordABC123@'
+
   # Application
   docker_full_cleanup:
     description: 'Set to true to run docker-compose down and docker system prune --all --force --volumes after.'
@@ -76,6 +65,8 @@ inputs:
   # Stack management
   stack_destroy:
     description: 'Set to "true" to Destroy the stack. Will delete the elb_logs bucket after the destroy action runs.'
+    required: false
+    default: 'false'
   
   # Domains
   domain_name:
@@ -140,7 +131,7 @@ runs:
         azure_resource_identifier: ${{ inputs.azure_resource_identifier }}
         azure_vm_admin_username: ${{ inputs.azure_vm_admin_username }}
         azure_vm_admin_password: ${{ inputs.azure_vm_admin_password }}
-        AZURE_DEFAULT_REGION: ${{ inputs.azure_default_region }}
+        AZURE_DEFAULT_REGION: ${{ inputs.AZURE_DEFAULT_REGION }}
         TF_STATE_BUCKET: ${{ inputs.tf_state_bucket }}
         TF_STATE_BUCKET_DESTROY: ${{ inputs.tf_state_bucket_destroy }}
         REPO_ENV: ${{ inputs.repo_env }}
@@ -156,7 +147,7 @@ runs:
         SUB_DOMAIN: ${{ inputs.sub_domain }}
         ROOT_DOMAIN: ${{ inputs.root_domain }}
         NO_CERT: ${{ inputs.no_cert }}
-        BITOPS_FAST_FAIL: true
+        BITOPS_FAST_FAIL: 'true'
         DOCKER_FULL_CLEANUP: ${{ inputs.docker_full_cleanup }}
         APP_DIRECTORY: ${{ inputs.app_directory }}
         APP_DIRECTORY_CLEANUP: ${{ inputs.app_directory_cleanup }}

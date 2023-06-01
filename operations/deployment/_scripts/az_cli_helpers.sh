@@ -20,7 +20,7 @@ function resourceGroupExists() {
 }
 
 function createResourceGroup() {
-  az group create --name $azure_resource_identifier --location $TF_VAR_azure_location
+  az group create --name $azure_resource_identifier --location $AZURE_DEFAULT_REGION
   az group wait --name $azure_resource_identifier --created
 }
 
@@ -28,7 +28,7 @@ function createStorageAccount() {
   local PROVISIONED
   az storage account create --name $AZURE_STORAGE_ACCOUNT \
     --resource-group $azure_resource_identifier \
-    --location $TF_VAR_azure_location \
+    --location $AZURE_DEFAULT_REGION \
     --sku $AZURE_STORAGE_SKU
 
   while true; do
@@ -52,7 +52,7 @@ function storageAccountExists() {
 }
 
 function createStorageContainer() {
-  az storage container create --name $AZURE_TF_STATE_CONTAINER \
+  az storage container create --name $TF_STATE_BUCKET \
     --account-name $AZURE_STORAGE_ACCOUNT \
     --auth-mode key \
     --account-key "$(getStorageAccountKey)" \
@@ -62,7 +62,7 @@ function createStorageContainer() {
 
 function storageContainerExists() {
   # returns true/false
-  az storage container exists --name $AZURE_TF_STATE_CONTAINER \
+  az storage container exists --name $TF_STATE_BUCKET \
     --account-name $AZURE_STORAGE_ACCOUNT \
     --auth-mode key \
     --account-key "$(getStorageAccountKey)" \

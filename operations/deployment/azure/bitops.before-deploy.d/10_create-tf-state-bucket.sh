@@ -6,7 +6,7 @@
 
 # exit on any error
 set -e
-set -x
+# set -x
 
 success=true
 
@@ -23,7 +23,7 @@ fi
 
 account=$AZURE_STORAGE_ACCOUNT
 group=$azure_resource_identifier
-container=$AZURE_TF_STATE_CONTAINER
+container=$TF_STATE_BUCKET
 
 # check if accounts already exist
 check_storage=$(az storage account check-name --name $account) # json
