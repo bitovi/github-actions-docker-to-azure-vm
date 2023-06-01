@@ -4,17 +4,12 @@ branding:
   icon: upload-cloud
   color: red
 inputs:
-  # Checkout
-  checkout:
-    description: 'Specifies if this action should checkout the code'
-    required: false
-    default: 'true'
-  
+
   # Azure
   AZURE_ARM_CLIENT_ID:
     description: 'Azure client ID'
     required: true
-  AAZURE_RM_CLIENT_SECRET:
+  AZURE_ARM_CLIENT_SECRET:
     description: 'Azure client secret'
     required: true
   AZURE_ARM_SUBSCRIPTION_ID:
