@@ -74,6 +74,8 @@ else
   -e ARM_SUBSCRIPTION_ID=$ARM_SUBSCRIPTION_ID \
   -e ARM_TENANT_ID=$ARM_TENANT_ID \
   -e azure_resource_identifier=$azure_resource_identifier \
+  -e azure_vm_admin_username=$azure_vm_admin_username \
+  -e azure_vm_admin_password=$azure_vm_admin_password \
   -e BITOPS_ENVIRONMENT="$BITOPS_ENVIRONMENT" \
   -e SKIP_DEPLOY_TERRAFORM="$SKIP_DEPLOY_TERRAFORM" \
   -e SKIP_DEPLOY_HELM="$SKIP_DEPLOY_HELM" \

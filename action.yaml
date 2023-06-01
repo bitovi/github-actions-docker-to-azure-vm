@@ -28,7 +28,15 @@ inputs:
     required: false
     default: 'false'
   azure_resource_identifier:
-    description: 'Set to override the AWS resource identifier for the deployment.  Defaults to `${org}-{repo}-{branch}`.  Use with destroy to destroy specific resources.'
+    description: 'Set to override the Azure resource identifier for the deployment.  Defaults to `${org}-{repo}-{branch}`.  Use with destroy to destroy specific resources.'
+  azure_vm_username:
+    description: 'Set to override the Azure VM username for the deployment.  Defaults to `ubuntu`.'
+    required: true
+    default: 'ubuntu'
+  azure_vm_password:
+    description: 'Set to override the Azure VM password for the deployment.  Defaults to `ubuntu`.'
+    required: true
+    default: 'ubuntu'
   
   # ENV files
   repo_env:
@@ -126,6 +134,8 @@ runs:
         ARM_SUBSCRIPTION_ID: ${{ inputs.AZURE_ARM_SUBSCRIPTION_ID }}
         ARM_TENANT_ID: ${{ inputs.AZURE_ARM_TENANT_ID }}        
         azure_resource_identifier: ${{ inputs.azure_resource_identifier }}
+        azure_vm_username: ${{ inputs.azure_vm_username }}
+        azure_vm_password: ${{ inputs.azure_vm_password }}
         AZURE_DEFAULT_REGION: ${{ inputs.azure_default_region }}
         TF_STATE_BUCKET: ${{ inputs.tf_state_bucket }}
         TF_STATE_BUCKET_DESTROY: ${{ inputs.tf_state_bucket_destroy }}
