@@ -43,11 +43,11 @@ $GITHUB_ACTION_PATH/operations/_scripts/generate/generate_bitops_config.sh
 cmd="ls -al $GITHUB_ACTION_PATH/operations/deployment/terraform/"
 echo $cmd && $cmd
 
-# Prints out bitops.config.yaml
-cmd="cat $GITHUB_ACTION_PATH/operations/deployment/terraform/bitops.config.yaml"
+cmd="cat $GITHUB_ACTION_PATH/operations/deployment/terraform/provider.tf"
 echo $cmd && $cmd
 
-cmd="cat $GITHUB_ACTION_PATH/operations/deployment/terraform/provider.tf"
+# Prints out bitops.config.yaml
+cmd="cat $GITHUB_ACTION_PATH/operations/deployment/terraform/bitops.config.yaml"
 echo $cmd && $cmd
 
 # echo "ls GITHUB_ACTION_PATH/operations/deployment/ansible/app/${GITHUB_REPO_NAME}"

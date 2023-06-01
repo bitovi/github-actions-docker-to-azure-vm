@@ -10,31 +10,29 @@ inputs:
     required: false
     default: 'true'
   
-  # AWS
-  aws_access_key_id:
-    description: 'AWS access key ID'
+  # Azure
+  AZURE_ARM_CLIENT_ID:
+    description: 'Azure client ID'
     required: true
-  aws_secret_access_key:
-    description: 'AWS secret access key'
+  AAZURE_RM_CLIENT_SECRET:
+    description: 'Azure client secret'
     required: true
-  aws_session_token:
-    description: 'AWS session token'
-    required: false
-  aws_default_region:
-    description: 'AWS default region'
-    default: us-east-1
-    required: false
-  aws_ami_id:
-    description: 'AWS AMI ID. Will default to the latest Ubuntu 22.04 server image (HVM) '
-    required: false
+  AZURE_ARM_SUBSCRIPTION_ID:
+    description: 'Azure subscription ID'
+    required: true
+  AZURE_ARM_TENANT_ID:
+    description: 'Azure tenant ID'
+    required: true
+  
+  # Terraform
   tf_state_bucket:
-    description: 'AWS S3 bucket to use for Terraform state. Defaults to `${org}-${repo}-{branch}-tf-state`'
+    description: 'Backend Bucket to use for Terraform state. Defaults to `${org}-${repo}-{branch}-tf-state`'
     required: false
   tf_state_bucket_destroy:
-    description: 'Force purge and deletion of S3 bucket defined. Any file contained there will be destroyed. `stack_destroy` must also be `true`'
+    description: 'Force purge and deletion of bucket on destroy. Any file contained there will be destroyed. `stack_destroy` must also be `true`'
     required: false
     default: 'false'
-  aws_resource_identifier:
+  azure_resource_identifier:
     description: 'Set to override the AWS resource identifier for the deployment.  Defaults to `${org}-{repo}-{branch}`.  Use with destroy to destroy specific resources.'
   
   # ENV files
@@ -48,10 +46,6 @@ inputs:
   ghv_env:
     description: '`.env` file to be used with the app from Github variables'
     required: false
-  aws_secret_env:
-    description: 'Secret name to pull env variables from AWS Secret Manager'
-    required: false
-    default: ''
   
   # Application
   docker_full_cleanup:
@@ -71,17 +65,6 @@ inputs:
   lb_healthcheck: 
     description: 'Load balancer health check string. Defaults to HTTP:app_port'
     required: false
-  
-  # EC2 Instance
-  ec2_instance_profile:
-    description: 'The AWS IAM instance profile to use for the EC2 instance'
-  ec2_instance_type: 
-    description: 'The AWS Instance type'
-    required: false
-  ec2_volume_size: 
-    description: 'The size of the volume (in GB) on the AWS Instance'
-    required: false
-    default: "8"
   
   # Stack management
   stack_destroy:
@@ -133,8 +116,7 @@ outputs:
 runs:
   using: 'composite'
   steps:
-    - name: Checkout if required
-      if: ${{ inputs.checkout == 'true' }}
+    - name: Checkout
       uses: actions/checkout@v3
 
     - name: Deploy with BitOps
@@ -144,10 +126,10 @@ runs:
         GITHUB_ACTION_PATH: ${{ github.action_path }}
         BITOPS_ENVIRONMENT: deployment
         TERRAFORM_TARGETS: ${{ inputs.targets }}
-        ARM_CLIENT_ID: ${{ inputs.ARM_CLIENT_ID }}
-        ARM_CLIENT_SECRET: ${{ inputs.ARM_CLIENT_SECRET }}
-        ARM_SUBSCRIPTION_ID: ${{ inputs.ARM_SUBSCRIPTION_ID }}
-        ARM_TENANT_ID: ${{ inputs.ARM_TENANT_ID }}        
+        ARM_CLIENT_ID: ${{ inputs.AZURE_ARM_CLIENT_ID }}
+        ARM_CLIENT_SECRET: ${{ inputs.AAZURE_RM_CLIENT_SECRET }}
+        ARM_SUBSCRIPTION_ID: ${{ inputs.AZURE_ARM_SUBSCRIPTION_ID }}
+        ARM_TENANT_ID: ${{ inputs.AZURE_ARM_TENANT_ID }}        
         azure_resource_identifier: ${{ inputs.azure_resource_identifier }}
         AZURE_DEFAULT_REGION: ${{ inputs.azure_default_region }}
         TF_STATE_BUCKET: ${{ inputs.tf_state_bucket }}
