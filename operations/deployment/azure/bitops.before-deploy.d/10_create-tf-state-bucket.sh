@@ -25,19 +25,18 @@ account=$AZURE_STORAGE_ACCOUNT
 group=$azure_resource_identifier
 container=$TF_STATE_BUCKET
 
+# we might not have a group yet, ie on first run. create it if not.
+group_exists=$(az group exists --name $group) # 'true' or 'false
+if [ $group_exists == 'false' ]; then
+  echo "Resource Group '$group' does not exist. Creating..." && createResourceGroup
+else
+  echo "Using Resource Group '$group'."
+fi
+
 # check if accounts already exist
 check_storage=$(az storage account check-name --name $account) # json
 storage_available=$(echo $check_storage | jq -r .nameAvailable) # 'true' or 'false
 storage_reason=$(echo $check_storage | jq -r .reason) # 'AlreadyExists' or 'Invalid'
-
-# we might not have a group yet, ie on first run. create it if not.
-group_exists=$(az group exists --name $group) # 'true' or 'false
-if [ $group_exists == 'false' ]; then
-  echo "Resource Group '$group' does not exist. Creating..."
-  createResourceGroup
-else
-  echo "Using Resource Group '$group'."
-fi
 
 # if the storage account name is available, create it
 # if it already exists, skip
