@@ -6,7 +6,7 @@
 
 # exit on any error
 set -e
-set -x
+# set -x
 
 success=true
 
@@ -21,43 +21,56 @@ else
   echo '=================' && echo "Running $(basename $0)..."
 fi
 
+# pull in vars from env
 account=$AZURE_STORAGE_ACCOUNT
 group=$azure_resource_identifier
 container=$TF_STATE_BUCKET
 
+### CHECK/CREATE RESOURCE GROUP
 # we might not have a group yet, ie on first run. create it if not.
 group_exists=$(az group exists --name $group) # 'true' or 'false
 if [ $group_exists == 'false' ]; then
   echo "Resource Group '$group' does not exist. Creating..." && createResourceGroup
 else
-  echo "Using Resource Group '$group'."
+  echo "Using existing Resource Group '$group'."
 fi
 
-# check if accounts already exist
+### CHECK/CREATE STORAGE ACCOUNT
+# check if storage account already exists
+# if the storage account name is available, create it in our resource group
+# if it already exists - check if it exists in the resource group
+# if so, skip creation
+# if it exists in another resource group, exit
+# if some other error, exit
 check_storage=$(az storage account check-name --name $account) # json
 storage_available=$(echo $check_storage | jq -r .nameAvailable) # 'true' or 'false
 storage_reason=$(echo $check_storage | jq -r .reason) # 'AlreadyExists' or 'Invalid'
 
-# if the storage account name is available, create it
-# if it already exists, skip
-# if some other error, exit
 if [ $storage_available == 'true' ]; then
   echo "Storage Account '$account' is available. Creating..."
-  storage_result=$(createStorageAccount | jq -r .provisioningState)
-  if [ $storage_result != 'Succeeded' ]; then
+  if [ $(createStorageAccount | jq -r .provisioningState) != 'Succeeded' ]; then
     success=false
   fi
 elif [ $storage_reason == 'AlreadyExists' ]; then
-  echo "Storage Account $account already exists."
+  # check if it exists in our resource group
+  storage_group=$(az storage account show --name $account | jq -r .resourceGroup)
+  if [ $storage_group == $group ]; then
+    echo "Storage Account '$account' exists in Resource Group '$group'."
+  else
+    echo "Storage Account '$account' exists in another Resource Group: '$storage_group'."
+    success=false
+  fi
 else
+  echo "Error checking Storage Account '$account': $check_storage"
   success=false
 fi
 
+### CHECK/CREATE STORAGE CONTAINER
+# check if storage container already exists
 if [ $success == 'true' ]; then
   msg_tail="in Storage Account '$account'"
   if [ $(storageContainerExists) == 'true' ]; then
-    echo -n "Container '$container' already exists $msg_tail."
-    echo " Skipping container creation."
+    echo "Container '$container' already exists $msg_tail."
   else
     echo "Creating container '$container' $msg_tail..."
     container_result=$(createStorageContainer)
