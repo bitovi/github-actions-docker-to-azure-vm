@@ -1,7 +1,7 @@
 #!/bin/bash
 # shellcheck disable=SC2086,SC1091
 
-# set -x
+set -x
 set -e
 
 SCRIPTS_PATH="$GITHUB_ACTION_PATH/operations/_scripts"
