@@ -79,7 +79,7 @@ function checkAzStorageName() {
     success='true'
   fi
 
-  [ $success == 'true' ] && exit 0 || exit 1
+  [ $success == 'true' ] || exit 1
 }
 
 function checkAzContainerName() {
@@ -102,7 +102,7 @@ function checkAzContainerName() {
     success='true'
   fi
 
-  [ $success == 'true' ] && exit 0 || exit 1
+  [ $success == 'true' ] || exit 1
 }
 
 # check for azure, else AWS
