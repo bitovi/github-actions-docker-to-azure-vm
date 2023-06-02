@@ -6,7 +6,7 @@
 
 # exit on any error
 set -e
-# set -x
+set -x
 
 success=true
 
