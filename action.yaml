@@ -22,6 +22,10 @@ inputs:
     description: 'Azure default region'
     required: true
     default: 'eastus'
+  AZURE_STORAGE_ACCOUNT:
+    description: 'Azure storage account name'
+    required: true
+    default: 'bitops'
 
   # Terraform
   tf_state_bucket:
@@ -127,7 +131,8 @@ runs:
         ARM_CLIENT_ID: ${{ inputs.AZURE_ARM_CLIENT_ID }}
         ARM_CLIENT_SECRET: ${{ inputs.AZURE_ARM_CLIENT_SECRET }}
         ARM_SUBSCRIPTION_ID: ${{ inputs.AZURE_ARM_SUBSCRIPTION_ID }}
-        ARM_TENANT_ID: ${{ inputs.AZURE_ARM_TENANT_ID }}        
+        ARM_TENANT_ID: ${{ inputs.AZURE_ARM_TENANT_ID }}
+        AZURE_STORAGE_ACCOUNT: ${{ inputs.AZURE_STORAGE_ACCOUNT }}
         azure_resource_identifier: ${{ inputs.azure_resource_identifier }}
         azure_vm_admin_username: ${{ inputs.azure_vm_admin_username }}
         azure_vm_admin_password: ${{ inputs.azure_vm_admin_password }}
