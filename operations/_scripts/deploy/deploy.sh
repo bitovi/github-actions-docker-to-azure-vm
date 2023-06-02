@@ -1,7 +1,7 @@
 #!/bin/bash
 # shellcheck disable=SC2086,SC1091
 
-set -x
+[ $DEBUG_MODE == 'true' ] && set -x
 set -e
 
 SCRIPTS_PATH="$GITHUB_ACTION_PATH/operations/_scripts"
@@ -93,9 +93,8 @@ else
   -e DEFAULT_FOLDER_NAME="_default" \
   -e BITOPS_FAST_FAIL="$BITOPS_FAST_FAIL" \
   -e AZURE_STORAGE_ACCOUNT="$AZURE_STORAGE_ACCOUNT" \
+  -e AZURE_STORAGE_SKU="$AZURE_STORAGE_SKU" \
   -e AZURE_DEFAULT_REGION="$AZURE_DEFAULT_REGION" \
-  -e azure_vm_admin_username="$azure_vm_admin_username" \
-  -e azure_vm_admin_password="$azure_vm_admin_password" \
   -v "$GITHUB_ACTION_PATH/operations:/opt/bitops_deployment" \
   bitovi/bitops:dev
 

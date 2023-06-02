@@ -26,6 +26,10 @@ inputs:
     description: 'Azure storage account name'
     required: true
     default: 'bitops'
+  AZURE_STORAGE_SKU:
+    description: 'Azure storage account SKU'
+    required: true
+    default: 'Standard_LRS'
 
   # Terraform
   tf_state_bucket:
@@ -133,6 +137,7 @@ runs:
         ARM_SUBSCRIPTION_ID: ${{ inputs.AZURE_ARM_SUBSCRIPTION_ID }}
         ARM_TENANT_ID: ${{ inputs.AZURE_ARM_TENANT_ID }}
         AZURE_STORAGE_ACCOUNT: ${{ inputs.AZURE_STORAGE_ACCOUNT }}
+        AZURE_STORAGE_SKU: ${{ inputs.AZURE_STORAGE_SKU }}
         azure_resource_identifier: ${{ inputs.azure_resource_identifier }}
         azure_vm_admin_username: ${{ inputs.azure_vm_admin_username }}
         azure_vm_admin_password: ${{ inputs.azure_vm_admin_password }}
