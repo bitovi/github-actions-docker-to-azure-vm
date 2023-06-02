@@ -1,5 +1,5 @@
 #!/bin/bash
-# shellcheck disable=SC2086
+# shellcheck disable=SC2086,SC1091
 
 # set -x
 set -e
@@ -12,7 +12,9 @@ export GITHUB_REPO_NAME
 TF_STATE_BUCKET="$($GITHUB_ACTION_PATH/operations/_scripts/generate/generate_buckets_identifiers.sh tf | xargs)"
 export TF_STATE_BUCKET
 
-$GITHUB_ACTION_PATH/operations/_scripts/deploy/check_bucket_name.sh $TF_STATE_BUCKET
+source "./check_bucket_name.sh"
+checkStorageName $AZURE_STORAGE_ACCOUNT azure
+checkContainerName $TF_STATE_BUCKET azure
 
 LB_LOGS_BUCKET="$($GITHUB_ACTION_PATH/operations/_scripts/generate/generate_buckets_identifiers.sh lb | xargs)"
 export LB_LOGS_BUCKET
@@ -41,8 +43,8 @@ $GITHUB_ACTION_PATH/operations/_scripts/generate/generate_bitops_config.sh
 # $GITHUB_ACTION_PATH/operations/_scripts/generate/generate_ansible_playbook.sh
 
 # List terraform folder
-cmd="ls -al $GITHUB_ACTION_PATH/operations/deployment/terraform/"
-echo $cmd && $cmd
+# cmd="ls -al $GITHUB_ACTION_PATH/operations/deployment/terraform/"
+# echo $cmd && $cmd
 
 cmd="cat $GITHUB_ACTION_PATH/operations/deployment/terraform/provider.tf"
 echo $cmd && $cmd
@@ -98,5 +100,5 @@ else
   echo "::endgroup::"
 fi
 
-# exit $BITOPS_RESULT
-echo result: $BITOPS_RESULT
+exit $BITOPS_RESULT
+# echo result: $BITOPS_RESULT
