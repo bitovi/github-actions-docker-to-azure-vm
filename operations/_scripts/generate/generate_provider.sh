@@ -12,6 +12,7 @@ echo "In $(basename $0)"
 
 # use a heredoc to avoid escaping quotes
 # and write the file in one line
+# TODO: parameterize backend
 cat << PROVIDER_HCL > "$GITHUB_ACTION_PATH/operations/deployment/terraform/provider.tf"
 terraform {
 

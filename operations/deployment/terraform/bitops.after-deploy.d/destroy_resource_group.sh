@@ -1,6 +1,8 @@
 #!/bin/bash
 # shellcheck disable=SC1091,SC2086
 
+# TODO: support not destroying the resource group
+
 set -e
 
 if { [ "${BITOPS_TERRAFORM_COMMAND}" != "destroy" ] && [ "${TERRAFORM_DESTROY}" != "true" ]; }; then
