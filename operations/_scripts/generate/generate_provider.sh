@@ -12,7 +12,6 @@ echo "In $(basename $0)"
 
 # use a heredoc to avoid escaping quotes
 # and write the file in one line
-# TODO: parameterize backend
 cat << PROVIDER_HCL > "$GITHUB_ACTION_PATH/operations/deployment/terraform/provider.tf"
 terraform {
 
@@ -26,9 +25,9 @@ terraform {
   }
 
   backend "azurerm" {
-    resource_group_name  = "bitops-azure-test"
-    storage_account_name = "bitops"
-    container_name       = "bitopstfstate"
+    resource_group_name  = "$azure_resource_identifier"
+    storage_account_name = "$AZURE_STORAGE_ACCOUNT"
+    container_name       = "$AZURE_STORAGE_CONTAINER"
     key                  = "state"
   }
 }
