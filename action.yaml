@@ -38,7 +38,7 @@ inputs:
   tf_state_bucket_destroy:
     description: 'Force purge and deletion of bucket on destroy. Any file contained there will be destroyed. `stack_destroy` must also be `true`'
     required: false
-    default: 'false'
+    default: 'true'
   azure_resource_identifier:
     description: 'Set to override the Azure resource identifier for the deployment.  Defaults to `${org}-{repo}-{branch}`.  Use with destroy to destroy specific resources.'
     required: true
@@ -47,7 +47,7 @@ inputs:
     required: true
     default: 'ubuntu'
   azure_vm_admin_password:
-    description: 'Set to override the Azure VM password for the deployment.  Defaults to `insecurePasswordABC123@`.'
+    description: 'Set to override the Azure VM password for the deployment.  Defaults to `insecurePasswordABC123@`. Prefer GH Secrets.'
     required: true
     default: 'insecurePasswordABC123@'
 
