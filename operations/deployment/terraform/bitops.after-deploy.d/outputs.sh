@@ -11,12 +11,16 @@
 #   The bo-out.env file is used by Ansible to populate variables passed on by Terraform
 # """
 
+set -e
 #set -x
 
-echo "In after hook - $0"
+echo "In after hook - $(basename $0)"
 
 if [ "$TERRAFORM_DESTROY" != "true" ]; then
-    # The sed command will make each variable be in it's line, and in case a list is present, will transform it into a line
-    terraform output | sed -e ':a;/"$/!N;s/\n//;ta' -e 's/ *= */=/g;s/[" ,]\+//g;s/],\(["[]\)/]\n\1/g' > /opt/bitops_deployment/bo-out.env
-    echo /opt/bitops_deployment/bo-out.env
+    # The sed command removes spaces, double quotes, and spaces before/after brackets
+    terraform output -json | jq -r 'to_entries[] | .key + "=" + (.value.value | tostring)' | \
+        sed -e 's/ //g' -e 's/"//g' -e 's/\[\ */\[/g' -e 's/\ *\]/\]/g' \
+        > /opt/bitops_deployment/bo-out.env
+
+    [ $DEBUG_MODE == 'true' ] && echo 'bo-out file:' && cat /opt/bitops_deployment/bo-out.env
 fi
