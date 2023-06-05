@@ -27,7 +27,7 @@ terraform {
   backend "azurerm" {
     resource_group_name  = "$azure_resource_identifier"
     storage_account_name = "$AZURE_STORAGE_ACCOUNT"
-    container_name       = "$AZURE_STORAGE_CONTAINER"
+    container_name       = "$TF_STATE_BUCKET"
     key                  = "state"
   }
 }
