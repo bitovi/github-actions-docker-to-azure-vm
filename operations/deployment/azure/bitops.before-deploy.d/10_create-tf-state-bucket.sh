@@ -6,7 +6,7 @@
 
 # exit on any error
 set -e
-# set -x
+[[ -n $DEBUG_MODE && $DEBUG_MODE == 'true' ]] && set -x
 
 success=true
 

@@ -1,7 +1,7 @@
 #!/bin/bash
 # shellcheck disable=SC2086,SC1091
 
-[ $DEBUG_MODE == 'true' ] && set -x
+[[ -n $DEBUG_MODE && $DEBUG_MODE == 'true' ]] && set -x
 set -e
 
 SCRIPTS_PATH="$GITHUB_ACTION_PATH/operations/_scripts"

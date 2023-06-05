@@ -12,7 +12,9 @@
 # """
 
 set -e
-#set -x
+[[ -n $DEBUG_MODE && $DEBUG_MODE == 'true' ]] && set -x
+
+BO_OUT_PATH=/opt/bitops_deployment/bo-out.env
 
 echo "In after hook - $(basename $0)"
 
@@ -20,7 +22,7 @@ if [ "$TERRAFORM_DESTROY" != "true" ]; then
     # The sed command removes spaces, double quotes, and spaces before/after brackets
     terraform output -json | jq -r 'to_entries[] | .key + "=" + (.value.value | tostring)' | \
         sed -e 's/ //g' -e 's/"//g' -e 's/\[\ */\[/g' -e 's/\ *\]/\]/g' \
-        > /opt/bitops_deployment/bo-out.env
+        > $BO_OUT_PATH
 
-    [ $DEBUG_MODE == 'true' ] && echo 'bo-out file:' && cat /opt/bitops_deployment/bo-out.env
+    [[ -n $DEBUG_MODE && $DEBUG_MODE == 'true' ]] && echo 'bo-out file:' && cat $BO_OUT_PATH
 fi
