@@ -14,7 +14,7 @@ fi
 echo
 echo '================='
 echo "Running $(basename $0) to destroy the resource group $azure_resource_identifier"
-source "$BITOPS_TEMPDIR/_scripts/az_cli_helpers.sh"
+source "$BITOPS_TEMPDIR/deployment/_scripts/az_cli_helpers.sh"
 destroyResourceGroup $azure_resource_identifier
 
 echo "Just in case... checking status of storage account $AZURE_STORAGE_ACCOUNT"
