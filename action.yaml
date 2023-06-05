@@ -162,7 +162,7 @@ runs:
         APP_DIRECTORY: ${{ inputs.app_directory }}
         APP_DIRECTORY_CLEANUP: ${{ inputs.app_directory_cleanup }}
         ADDITIONAL_TAGS: ${{ inputs.additional_tags }}
-        DEBUG_MODE: 'true'
+        DEBUG_MODE: 'false'
      
       run: |
         echo "running operations/_scripts/deploy/deploy.sh"
