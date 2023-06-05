@@ -1,5 +1,5 @@
 # print the output of the public ip
-output "public_ip" {
+output "vm_url" {
   value = azurerm_public_ip.test.ip_address
 }
 
