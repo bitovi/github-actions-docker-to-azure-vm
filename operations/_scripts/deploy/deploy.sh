@@ -95,6 +95,7 @@ else
   -e AZURE_STORAGE_ACCOUNT="$AZURE_STORAGE_ACCOUNT" \
   -e AZURE_STORAGE_SKU="$AZURE_STORAGE_SKU" \
   -e AZURE_DEFAULT_REGION="$AZURE_DEFAULT_REGION" \
+  -e DEBUG_MODE="$DEBUG_MODE" \
   -v "$GITHUB_ACTION_PATH/operations:/opt/bitops_deployment" \
   bitovi/bitops:dev
 
