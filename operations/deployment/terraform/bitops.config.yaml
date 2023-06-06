@@ -1,0 +1,7 @@
+
+terraform:
+  cli:
+    stack-action: destroy
+    targets: 
+    - random_integer.az_select
+  options: {}

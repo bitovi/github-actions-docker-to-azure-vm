@@ -1,0 +1,22 @@
+local.sh
+*.env
+
+# Terraform
+*.terraform.lock*
+.terraform*
+
+# BitOps
+
+# BitOps GHAs
+provider.tf
+terraform.tfvars
+
+terraform-*
+operations/deployment/terraform/inventory.yaml
+
+*.pem
+
+*test*
+
+.vscode/
+operations/_scripts/deploy/deploy.local.sh
