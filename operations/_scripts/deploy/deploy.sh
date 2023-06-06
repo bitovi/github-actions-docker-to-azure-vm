@@ -33,17 +33,17 @@ $SCRIPTS_PATH/generate/generate_provider.sh
 # Generate terraform variables
 $SCRIPTS_PATH/generate/generate_tf_vars.sh
 
-# Generate dot_env
-# $SCRIPTS_PATH/generate/generate_dot_env.sh
+Generate dot_env
+$SCRIPTS_PATH/generate/generate_dot_env.sh
 
-# Generate app repo
-# $SCRIPTS_PATH/generate/generate_app_repo.sh
+Generate app repo
+$SCRIPTS_PATH/generate/generate_app_repo.sh
 
 # Generate bitops config
 $SCRIPTS_PATH/generate/generate_bitops_config.sh
 
-# Generate Ansible playbook
-# $SCRIPTS_PATH/generate/generate_ansible_playbook.sh
+Generate Ansible playbook
+$SCRIPTS_PATH/generate/generate_ansible_playbook.sh
 
 # List terraform folder
 # cmd="ls -al $OPS_ENV_PATH/terraform/"
@@ -56,8 +56,8 @@ echo $cmd && $cmd
 cmd="cat $OPS_ENV_PATH/terraform/bitops.config.yaml"
 echo $cmd && $cmd
 
-# echo "ls OPS_ENV_PATH/ansible/app/${GITHUB_REPO_NAME}"
-# ls "$OPS_ENV_PATH/ansible/app/${GITHUB_REPO_NAME}"
+cmd="ls $OPS_ENV_PATH/ansible/app/${GITHUB_REPO_NAME}"
+echo $cmd && $cmd
 
 TERRAFORM_COMMAND=""
 TERRAFORM_DESTROY=""

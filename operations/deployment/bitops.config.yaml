@@ -4,3 +4,5 @@ bitops:
       plugin: azure
     terraform:
       plugin: terraform
+    ansible:
+      plugin: ansible
