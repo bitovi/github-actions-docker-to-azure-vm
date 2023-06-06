@@ -31,6 +31,14 @@ inputs:
     required: true
     default: 'Standard_LRS'
 
+  # TODO: Support Bastion
+  # Azure Bastion Service enables you to securely and seamlessly RDP & SSH to your VMs in your Azure virtual network, without exposing a public 
+  # IP on the VM, directly from the Azure portal, without the need of any additional client/agent or any piece of software.
+
+  # For remote connectivity:
+  # TODO: Port prerequisite not met. Add an inbound network security group rule with destination port 22.
+  # TODO: IP address prerequisite not met. Add a public IP address to the VM's network interface.
+
   # Terraform
   tf_state_bucket:
     description: 'Backend Bucket to use for Terraform state. Defaults to `${org}-${repo}-{branch}-tf-state`'
@@ -114,6 +122,12 @@ inputs:
   efs_mount_target:
     description: "Directory path in efs to mount directory to, default is `/`"
 
+  # BitOps
+  DEBUG_MODE:
+    description: 'Set to "true" to enable debug mode'
+    required: false
+    default: 'false'
+
 outputs:
   vm_url:
     description: "The URL of the generated app"
@@ -162,7 +176,7 @@ runs:
         APP_DIRECTORY: ${{ inputs.app_directory }}
         APP_DIRECTORY_CLEANUP: ${{ inputs.app_directory_cleanup }}
         ADDITIONAL_TAGS: ${{ inputs.additional_tags }}
-        DEBUG_MODE: 'true'
+        DEBUG_MODE: ${{ inputs.DEBUG_MODE }}
      
       run: |
         echo "running operations/_scripts/deploy/deploy.sh"
