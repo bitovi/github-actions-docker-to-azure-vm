@@ -33,16 +33,16 @@ $SCRIPTS_PATH/generate/generate_provider.sh
 # Generate terraform variables
 $SCRIPTS_PATH/generate/generate_tf_vars.sh
 
-Generate dot_env
+# Generate dot_env
 $SCRIPTS_PATH/generate/generate_dot_env.sh
 
-Generate app repo
+# Generate app repo
 $SCRIPTS_PATH/generate/generate_app_repo.sh
 
 # Generate bitops config
 $SCRIPTS_PATH/generate/generate_bitops_config.sh
 
-Generate Ansible playbook
+# Generate Ansible playbook
 $SCRIPTS_PATH/generate/generate_ansible_playbook.sh
 
 # List terraform folder
@@ -97,7 +97,7 @@ else
   -e AZURE_DEFAULT_REGION="$AZURE_DEFAULT_REGION" \
   -e DEBUG_MODE="$DEBUG_MODE" \
   -v "$GITHUB_ACTION_PATH/operations:/opt/bitops_deployment" \
-  bitovi/bitops:dev
+  $BITOPS_IMAGE
 
   BITOPS_RESULT=$?
   echo "::endgroup::"

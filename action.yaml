@@ -127,6 +127,10 @@ inputs:
     description: 'Set to "true" to enable debug mode'
     required: false
     default: 'false'
+  BITOPS_IMAGE:
+    description: 'Set to override the BitOps image to use for the deployment.  Defaults to `bitovi/bitops:latest`.'
+    required: false
+    default: 'bitovi/bitops:latest'
 
 outputs:
   vm_url:
