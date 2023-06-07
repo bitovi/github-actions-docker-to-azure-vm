@@ -45,7 +45,7 @@
  }
 
  resource "azurerm_network_interface" "test" {
-   count               = 2
+   count               = var.azure_vm_count
    name                = "${var.azure_resource_identifier}-NIC-${count.index}"
    location            = data.azurerm_resource_group.test.location
    resource_group_name = data.azurerm_resource_group.test.name
@@ -59,7 +59,7 @@
  }
 
  resource "azurerm_managed_disk" "test" {
-   count                = 2
+   count                = var.azure_vm_count
    name                 = "${var.azure_resource_identifier}-ManagedDisk-${count.index}"
    location             = data.azurerm_resource_group.test.location
    resource_group_name  = data.azurerm_resource_group.test.name
@@ -73,14 +73,14 @@
    name                         = "${var.azure_resource_identifier}-AVSet"
    location                     = data.azurerm_resource_group.test.location
    resource_group_name          = data.azurerm_resource_group.test.name
-   platform_fault_domain_count  = 2
-   platform_update_domain_count = 2
+   platform_fault_domain_count  = var.azure_vm_count
+   platform_update_domain_count = var.azure_vm_count
    managed                      = true
   #  tags = local.azure_tags
  }
 
  resource "azurerm_virtual_machine" "test" {
-   count                 = 2
+   count                 = var.azure_vm_count
    name                  = "${var.azure_resource_identifier}-VM-${count.index}"
    location              = data.azurerm_resource_group.test.location
    availability_set_id   = azurerm_availability_set.avset.id
@@ -138,3 +138,8 @@
 
   #  tags = local.azure_tags
  }
+
+ resource "tls_private_key" "key" {
+  algorithm = "RSA"
+  rsa_bits  = 4096
+}

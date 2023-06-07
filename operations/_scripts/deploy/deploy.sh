@@ -74,7 +74,7 @@ else
   echo "::group::BitOps Excecution"  
   echo "Running BitOps for env: $BITOPS_ENVIRONMENT"
 
-  docker run --rm --name bitops \
+  docker run --name bitops \
   -e ARM_CLIENT_ID=$ARM_CLIENT_ID \
   -e ARM_CLIENT_SECRET=$ARM_CLIENT_SECRET \
   -e ARM_SUBSCRIPTION_ID=$ARM_SUBSCRIPTION_ID \

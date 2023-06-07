@@ -114,9 +114,9 @@ root_domain=$(generate_var root_domain $ROOT_DOMAIN)
 additional_tags=$(generate_var additional_tags $ADDITIONAL_TAGS)
 #-- ANSIBLE --##
 application_mount_target=$(generate_var application_mount_target $APPLICATION_MOUNT_TARGET)
-efs_mount_target=$(generate_var efs_mount_target $EFS_MOUNT_TARGET)
+# efs_mount_target=$(generate_var efs_mount_target $EFS_MOUNT_TARGET)
 data_mount_target=$(generate_var data_mount_target $DATA_MOUNT_TARGET)
-ec2_volume_size=$(generate_var ec2_volume_size $EC2_VOLUME_SIZE)
+# ec2_volume_size=$(generate_var ec2_volume_size $EC2_VOLUME_SIZE)
 
 
 # -------------------------------------------------- #
@@ -155,6 +155,6 @@ $additional_tags
 
 ##-- ANSIBLE --##
 $application_mount_target
-$efs_mount_target
+# $efs_mount_target
 $data_mount_target
 TFVARS

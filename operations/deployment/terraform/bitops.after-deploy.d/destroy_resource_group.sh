@@ -5,26 +5,28 @@
 
 set -e
 
+account=$AZURE_STORAGE_ACCOUNT
+spacer='================='
+
 if { [ "${BITOPS_TERRAFORM_COMMAND}" != "destroy" ] && [ "${TERRAFORM_DESTROY}" != "true" ]; }; then
   echo
-  echo '================='
+  echo $spacer
   echo "Terraform Action is '${BITOPS_TERRAFORM_COMMAND:-$TERRAFORM_DESTROY}'. Skipping $(basename $0)."
-  echo '================='
+  echo $spacer
   exit 0
-fi
-
-echo
-echo '================='
-echo "Running $(basename $0) to destroy the resource group $azure_resource_identifier"
-source "$BITOPS_TEMPDIR/deployment/_scripts/az_cli_helpers.sh"
-destroyResourceGroup $azure_resource_identifier
-
-echo "Just in case... checking status of storage account $AZURE_STORAGE_ACCOUNT"
-storage_exists=$(storageAccountExists $AZURE_STORAGE_ACCOUNT)
-if [ "$storage_exists" == "true" ]; then
-  echo "Storage account $AZURE_STORAGE_ACCOUNT exists. Destroying..."
-  destroyStorageAccount $AZURE_STORAGE_ACCOUNT $azure_resource_identifier
 else
-  echo "Storage account $AZURE_STORAGE_ACCOUNT does not exist."
+  echo
+  echo $spacer
+  echo "Running $(basename $0) to destroy the resource group $azure_resource_identifier"
+  source "$BITOPS_TEMPDIR/deployment/_scripts/az_cli_helpers.sh"
+  destroyResourceGroup $azure_resource_identifier
+
+  echo "Just in case... checking status of storage account $account"
+  if [ "$(storageAccountExists $account)" == "true" ]; then
+    echo "Storage account $account exists. Destroying..."
+    destroyStorageAccount $account $azure_resource_identifier
+  else
+    echo "Storage account $account does not exist."
+  fi
+  echo $spacer
 fi
-echo '================='

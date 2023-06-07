@@ -119,8 +119,8 @@ inputs:
     default: data
   data_mount_target:
     description: "Directory path within docker env to mount directory to, default is `/data`"
-  efs_mount_target:
-    description: "Directory path in efs to mount directory to, default is `/`"
+  # efs_mount_target:
+  #   description: "Directory path in efs to mount directory to, default is `/`"
 
   # BitOps
   DEBUG_MODE:
@@ -179,6 +179,8 @@ runs:
         DOCKER_FULL_CLEANUP: ${{ inputs.docker_full_cleanup }}
         APP_DIRECTORY: ${{ inputs.app_directory }}
         APP_DIRECTORY_CLEANUP: ${{ inputs.app_directory_cleanup }}
+        APPLICATION_MOUNT_TARGET: ${{ inputs.application_mount_target }}
+        DATA_MOUNT_TARGET: ${{ inputs.data_mount_target }}
         ADDITIONAL_TAGS: ${{ inputs.additional_tags }}
         DEBUG_MODE: ${{ inputs.DEBUG_MODE }}
      
