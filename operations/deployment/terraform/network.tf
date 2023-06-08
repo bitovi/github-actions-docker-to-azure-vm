@@ -49,22 +49,22 @@ resource "azurerm_public_ip" "test" {
   # tags = local.azure_tags
 }
 
-# resource "azurerm_network_security_group" "vm" {
-#   name                = "tls_vm"
-#   location            = data.azurerm_resource_group.test.location
-#   resource_group_name = data.azurerm_resource_group.test.name
-#   security_rule {
-#     access                     = "Allow"
-#     direction                  = "Inbound"
-#     name                       = "ssh"
-#     priority                   = 100
-#     protocol                   = "Tcp"
-#     source_port_range          = "22"
-#     source_address_prefix      = "*"
-#     destination_port_range     = "22"
-#     destination_address_prefix = azurerm_network_interface.public[0].ip_configuration[0].public_ip_address_id
-#   }
-# }
+resource "azurerm_network_security_group" "vm" {
+  name                = "nsg_ssh_vm"
+  location            = data.azurerm_resource_group.test.location
+  resource_group_name = data.azurerm_resource_group.test.name
+  security_rule {
+    name                       = "ssh"
+    priority                   = 1001
+    access                     = "Allow"
+    direction                  = "Inbound"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    source_address_prefix      = "*"
+    destination_port_range     = "22"
+    destination_address_prefix = azurerm_network_interface.public[0].private_ip_address
+  }
+}
 
 # resource "azurerm_network_interface_security_group_association" "main" {
 #   count                     = var.azure_vm_count

@@ -68,13 +68,13 @@ resource "azurerm_linux_virtual_machine" "test" {
   #  tags = local.azure_tags
  }
 
-resource "azurerm_managed_disk" "test" {
-  count                = var.azure_vm_count
-  name                 = "${var.azure_resource_identifier}-ManagedDisk-${count.index}"
-  location             = data.azurerm_resource_group.test.location
-  resource_group_name  = data.azurerm_resource_group.test.name
-  storage_account_type = "Standard_LRS"
-  create_option        = "Empty"
-  disk_size_gb         = "1023"
-  #  tags = local.azure_tags
-}
+# resource "azurerm_managed_disk" "test" {
+#   count                = var.azure_vm_count
+#   name                 = "${var.azure_resource_identifier}-ManagedDisk-${count.index}"
+#   location             = data.azurerm_resource_group.test.location
+#   resource_group_name  = data.azurerm_resource_group.test.name
+#   storage_account_type = "Standard_LRS"
+#   create_option        = "Empty"
+#   disk_size_gb         = "1023"
+#   #  tags = local.azure_tags
+# }
