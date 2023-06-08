@@ -25,6 +25,10 @@ resource "azurerm_network_interface" "public" {
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = azurerm_public_ip.test.id
   }
+
+  lifecycle {
+    create_before_destroy = true
+  }
   # tags = local.azure_tags
 }
 # resource "azurerm_network_interface" "internal" {

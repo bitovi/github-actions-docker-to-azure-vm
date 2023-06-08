@@ -1,6 +1,6 @@
 - name: Ensure hosts is up and running
   hosts: bitops_servers
-  gather_facts: yes
+  gather_facts: no
   tasks:
   - name: Wait for hosts to come up
     wait_for_connection:
