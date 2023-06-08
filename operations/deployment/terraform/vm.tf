@@ -8,13 +8,14 @@ resource "azurerm_linux_virtual_machine" "test" {
 
   admin_username = var.azure_vm_admin_username
   admin_password = var.azure_vm_admin_password
+  disable_password_authentication = false
+  
   computer_name  = var.azure_os_profile_computer_name
 
   network_interface_ids = [
-    element(azurerm_network_interface.test.*.id, count.index)
+    azurerm_network_interface.public[count.index].id
+    # azurerm_network_interface.internal[count.index].id
   ]
-
-  disable_password_authentication = false
 
   # Uncomment this line to delete the OS disk automatically when deleting the VM
   # delete_os_disk_on_termination = true
