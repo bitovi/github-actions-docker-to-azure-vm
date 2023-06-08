@@ -37,6 +37,11 @@ resource "azurerm_linux_virtual_machine" "test" {
     storage_account_type = "Standard_LRS"
   }
 
+  admin_ssh_key {
+    username       = var.azure_vm_admin_username
+    public_key     = azurerm_ssh_public_key.key.public_key
+  }
+
   # Optional data disks
 #  storage_data_disk {
 #    name              = "datadisk_new_${count.index}"
