@@ -15,7 +15,7 @@ echo "In $(basename $0)"
 cat << PROVIDER_HCL > "$GITHUB_ACTION_PATH/operations/deployment/terraform/provider.tf"
 terraform {
 
-  required_version = ">=0.12"
+  required_version = ">=0.13"
 
   required_providers {
     azurerm = {
