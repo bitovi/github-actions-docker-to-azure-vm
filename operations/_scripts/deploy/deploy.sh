@@ -22,6 +22,8 @@ checkContainerName $TF_STATE_BUCKET azure
 LB_LOGS_BUCKET="$($SCRIPTS_PATH/generate/generate_buckets_identifiers.sh lb | xargs)"
 export LB_LOGS_BUCKET
 
+source "$SCRIPTS_PATH/generate/generate_helpers.sh"
+
 $SCRIPTS_PATH/deploy/check_bucket_name.sh $LB_LOGS_BUCKET
 
 # Generate subdomain

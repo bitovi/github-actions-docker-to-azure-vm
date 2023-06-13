@@ -1,9 +1,11 @@
 #!/bin/bash
-# shellcheck disable=SC2086
+# shellcheck disable=SC1091
 
 set -e
 echo "In $(basename $0)"
 [[ -n $DEBUG_MODE && $DEBUG_MODE == 'true' ]] && set -x
+
+source "$GITHUB_ACTION_PATH/operations/_scripts/generate/generate_helpers.sh"
 
 PLAYBOOK_PATH=$GITHUB_ACTION_PATH/operations/deployment/ansible/playbook.yml
 
