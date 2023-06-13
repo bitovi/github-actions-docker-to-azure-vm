@@ -4,8 +4,17 @@ set -e
 
 [[ -n $DEBUG_MODE && $DEBUG_MODE == 'true' ]] && set -x
 
-echo "in before hook - $(basename $0)"
-echo "BitOps Ansible before script: Merge Terraform Enviornment Variables..."
+# TODO: elevate this to a shared function
+# avoid running this script if the Terraform CLI Action is `destroy`
+terraform_cmd=$(cat $BITOPS_ENVROOT/terraform/bitops.config.yaml | shyaml get-value terraform.cli.stack-action)
+if [ $terraform_cmd == "destroy"  ]; then
+  echo '=================' && echo "Terraform Action is 'destroy'. Skipping $(basename $0)." && echo '================='
+  exit 0
+else 
+  echo '=================' && echo "Running $(basename $0)..."
+fi
+
+echo "BitOps Ansible before script: Merge Terraform Environment Variables..."
 
 # Merging order
 order=tf,postgres,repo,ghv,ghs,aws
@@ -88,3 +97,10 @@ IFS=',' read -r -a options <<< "$order"
 for option in "${options[@]}"; do
   process "$option"
 done
+
+# print the generated inventory file
+if [[ -n $DEBUG_MODE && $DEBUG_MODE == 'true' ]]; then 
+  tf_inv_file="$BITOPS_ENVROOT/terraform/inventory.yaml"
+  echo "Printing the generated inventory file: $tf_inv_file"
+  cat $tf_inv_file
+fi

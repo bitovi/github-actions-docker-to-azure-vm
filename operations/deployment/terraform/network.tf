@@ -70,6 +70,17 @@ resource "azurerm_network_security_group" "vm" {
   }
 }
 
+# TODO: add dns/cname for friendly domain name
+# https://learn.microsoft.com/en-us/azure/virtual-machines/custom-domain
+# https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/dns_cname_record
+# resource "azurerm_dns_cname_record" "test" {
+#   name                = "www"
+#   zone_name           = "example.com"
+#   resource_group_name = "mygroup"
+#   ttl                 = 300
+#   record              = "example.com"
+# }
+
 # resource "azurerm_network_interface_security_group_association" "main" {
 #   count                     = var.azure_vm_count
 #   network_interface_id      = azurerm_network_interface.internal[count.index].id
