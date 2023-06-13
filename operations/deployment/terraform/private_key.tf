@@ -1,11 +1,11 @@
 resource "tls_private_key" "key" {
   algorithm = "RSA"
-  rsa_bits  = 4096
+  rsa_bits  = 2048
 }
 
 resource "local_sensitive_file" "private_key" {
-  content         = tls_private_key.key.private_key_pem
-  filename        = format("%s/%s/%s", abspath(path.root), ".ssh", "bitops-ssh-key.pem")
+  content         = tls_private_key.key.private_key_openssh
+  filename        = format("%s/%s/%s", abspath(path.root), ".ssh", "bitops-privatekey.pem")
   file_permission = "0600"
 }
 
