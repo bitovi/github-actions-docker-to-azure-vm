@@ -98,10 +98,12 @@ else
   -e AZURE_DEFAULT_REGION="$AZURE_DEFAULT_REGION" \
   -e DEBUG_MODE="$DEBUG_MODE" \
   -v "$GITHUB_ACTION_PATH/operations:/opt/bitops_deployment" \
-  $BITOPS_IMAGE
+  bitovi/bitops:dev
 
   BITOPS_RESULT=$?
   echo "::endgroup::"
 fi
 
 exit $BITOPS_RESULT
+
+# TODO: support incoming image tag from workflow
