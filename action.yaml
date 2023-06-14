@@ -37,7 +37,6 @@ inputs:
 
   # For remote connectivity:
   # TODO: Port prerequisite not met. Add an inbound network security group rule with destination port 22.
-  # TODO: IP address prerequisite not met. Add a public IP address to the VM's network interface.
 
   # Terraform
   tf_state_bucket:
@@ -119,14 +118,18 @@ inputs:
     default: data
   data_mount_target:
     description: "Directory path within docker env to mount directory to, default is `/data`"
-  efs_mount_target:
-    description: "Directory path in efs to mount directory to, default is `/`"
+  # efs_mount_target:
+  #   description: "Directory path in efs to mount directory to, default is `/`"
 
   # BitOps
   DEBUG_MODE:
     description: 'Set to "true" to enable debug mode'
     required: false
     default: 'false'
+  BITOPS_IMAGE:
+    description: 'Set to override the BitOps image to use for the deployment.  Defaults to `bitovi/bitops:latest`.'
+    required: false
+    default: 'bitovi/bitops:latest'
 
 outputs:
   vm_url:
@@ -175,6 +178,8 @@ runs:
         DOCKER_FULL_CLEANUP: ${{ inputs.docker_full_cleanup }}
         APP_DIRECTORY: ${{ inputs.app_directory }}
         APP_DIRECTORY_CLEANUP: ${{ inputs.app_directory_cleanup }}
+        APPLICATION_MOUNT_TARGET: ${{ inputs.application_mount_target }}
+        DATA_MOUNT_TARGET: ${{ inputs.data_mount_target }}
         ADDITIONAL_TAGS: ${{ inputs.additional_tags }}
         DEBUG_MODE: ${{ inputs.DEBUG_MODE }}
      
