@@ -31,7 +31,7 @@ echo -en "
 " >> $PLAYBOOK_PATH
 fi
 
-# Adding app_pore cleanup task to playbook
+# Adding app_repo cleanup task to playbook
 if [[ $APP_DIRECTORY_CLEANUP = true ]]; then
 echo -en "
   - name: EC2 Cleanup
@@ -50,13 +50,13 @@ echo -en "
     include_tasks: tasks/umount.yml
 " >> $PLAYBOOK_PATH
 
-if [[ $(alpha_only "$AWS_EFS_CREATE") == true ]] || [[ $(alpha_only "$AWS_EFS_CREATE_HA") == true ]] || [[ $AWS_EFS_MOUNT_ID != "" ]]; then
-echo -en "
-  - name: Mount efs
-    include_tasks: tasks/mount.yml
-    when: mount_efs
-" >> $PLAYBOOK_PATH
-fi
+# if [[ $(alpha_only "$AWS_EFS_CREATE") == true ]] || [[ $(alpha_only "$AWS_EFS_CREATE_HA") == true ]] || [[ $AWS_EFS_MOUNT_ID != "" ]]; then
+# echo -en "
+#   - name: Mount efs
+#     include_tasks: tasks/mount.yml
+#     when: mount_efs
+# " >> $PLAYBOOK_PATH
+# fi
 
 echo -en "
   - name: Include start

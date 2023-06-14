@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# TODO: wrap the generate scripts in functions in here
+
 # # convert 'a,b,c'
 # # to '["a","b","c"]'
 # comma_str_to_tf_array () {

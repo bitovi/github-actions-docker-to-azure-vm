@@ -22,10 +22,9 @@ checkContainerName $TF_STATE_BUCKET azure
 LB_LOGS_BUCKET="$($SCRIPTS_PATH/generate/generate_buckets_identifiers.sh lb | xargs)"
 export LB_LOGS_BUCKET
 
-source "$SCRIPTS_PATH/generate/generate_helpers.sh"
-
 $SCRIPTS_PATH/deploy/check_bucket_name.sh $LB_LOGS_BUCKET
 
+source "$SCRIPTS_PATH/generate/generate_helpers.sh"
 # Generate subdomain
 $SCRIPTS_PATH/generate/generate_subdomain.sh
 
@@ -76,7 +75,7 @@ else
   echo "::group::BitOps Excecution"  
   echo "Running BitOps for env: $BITOPS_ENVIRONMENT"
 
-  docker run $BITOPS_REMOVE --name bitops \
+  docker run --rm --name bitops \
   -e ARM_CLIENT_ID=$ARM_CLIENT_ID \
   -e ARM_CLIENT_SECRET=$ARM_CLIENT_SECRET \
   -e ARM_SUBSCRIPTION_ID=$ARM_SUBSCRIPTION_ID \
@@ -106,4 +105,3 @@ else
 fi
 
 exit $BITOPS_RESULT
-# echo result: $BITOPS_RESULT

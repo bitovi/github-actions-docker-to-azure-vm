@@ -37,7 +37,6 @@ inputs:
 
   # For remote connectivity:
   # TODO: Port prerequisite not met. Add an inbound network security group rule with destination port 22.
-  # TODO: IP address prerequisite not met. Add a public IP address to the VM's network interface.
 
   # Terraform
   tf_state_bucket:
