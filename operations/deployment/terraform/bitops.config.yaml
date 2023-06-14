@@ -1,7 +1,7 @@
 
 terraform:
   cli:
-    stack-action: destroy
+    stack-action: apply
     targets: 
     - random_integer.az_select
   options: {}

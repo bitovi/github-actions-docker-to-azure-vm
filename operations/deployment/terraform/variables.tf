@@ -9,6 +9,11 @@ variable "azure_location" {
   default     = "eastus"
 }
 
+variable "azure_vm_count" {
+  description = "Number of Azure virtual machines to create"
+  type        = number
+  default     = 1
+}
 
 variable "azure_vm_size" {
   description = "Size of the Azure virtual machine"
@@ -38,4 +43,42 @@ variable "azure_tf_state_bucket" {
   description = "Azure storage account name for Terraform state"
   type        = string
   default     = "bitopstfstate"
+}
+
+variable "app_repo_name" {
+  type        = string
+  description = "GitHub Repo Name"
+}
+
+variable "app_install_root" {
+  type        = string
+  description = "Path on the instance where the app will be cloned (do not include app_repo_name)."
+  default     = "/home/ubuntu"
+}
+
+variable "application_mount_target" {
+  type        = string
+  description = "Directory path in application env to mount directory"
+  default = "data"
+}
+
+variable "data_mount_target" {
+  type        = string
+  description = "Directory path in efs to mount to"
+  default     = "/data"
+}
+
+variable "ops_repo_environment" {
+  type        = string
+  description = "Ops Repo Environment (i.e. directory name)"
+}
+
+variable "app_org_name" {
+  type        = string
+  description = "GitHub Org Name"
+}
+
+variable "app_branch_name" {
+  type        = string
+  description = "GitHub Branch Name"
 }

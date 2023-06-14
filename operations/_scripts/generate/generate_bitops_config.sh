@@ -2,7 +2,8 @@
 
 set -e
 
-echo "In generate_bitops_config.sh"
+echo "In $(basename $0)"
+[[ -n $DEBUG_MODE && $DEBUG_MODE == 'true' ]] && set -x
 
 CONFIG_STACK_ACTION="apply"
 if [ "$STACK_DESTROY" == "true" ]; then

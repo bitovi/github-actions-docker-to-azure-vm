@@ -10,7 +10,7 @@ output "resource_group" {
 
 # print the vm name
 output "vm_names" {
-  value = azurerm_virtual_machine.test.*.name
+  value = azurerm_linux_virtual_machine.test.*.name
 }
 
 # print location
