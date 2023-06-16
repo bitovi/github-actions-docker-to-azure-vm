@@ -1,8 +1,12 @@
 #!/bin/bash
+# shellcheck disable=SC2086,SC1091
 
 set -e
 
-[[ -n $DEBUG_MODE && $DEBUG_MODE == 'true' ]] && set -x
+source "$BITOPS_TEMPDIR/deployment/_scripts/az_cli_helpers.sh"
+source "$BITOPS_TEMPDIR/_scripts/deploy/deploy_helpers.sh"
+
+isDebugMode && set -x
 
 # TODO: elevate this to a shared function
 # avoid running this script if the Terraform CLI Action is `destroy`

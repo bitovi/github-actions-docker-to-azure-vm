@@ -10,7 +10,7 @@ set -e
 SCRIPTS_PATH="$GITHUB_ACTION_PATH/operations/_scripts"
 OPS_ENV_PATH="$GITHUB_ACTION_PATH/operations/deployment"
 
-echo "::group::In Deploy"
+echo "::group::Deploy"
 GITHUB_REPO_NAME=$(echo "$GITHUB_REPOSITORY" | sed 's/^.*\///')
 export GITHUB_REPO_NAME
 
@@ -70,7 +70,7 @@ echo "::endgroup::"
 if [[ $SKIP_BITOPS_RUN == "true" ]]; then
   echo "SKIP_BITOPS_RUN is true, skipping BitOps execution"
 else
-  echo "::group::BitOps Excecution"  
+  echo "::group::BitOps Execution"  
   echo "Running BitOps for env: $BITOPS_ENVIRONMENT"
 
   docker run --rm --name bitops \

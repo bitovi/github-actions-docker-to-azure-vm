@@ -1,4 +1,5 @@
 #!/bin/bash
+# shellcheck disable=SC1091
 
 # """
 # What
@@ -12,7 +13,9 @@
 # """
 
 set -e
-[[ -n $DEBUG_MODE && $DEBUG_MODE == 'true' ]] && set -x
+
+source "$BITOPS_TEMPDIR/_scripts/deploy/deploy_helpers.sh"
+isDebugMode && set -x
 
 BO_OUT_PATH=/opt/bitops_deployment/bo-out.env
 
@@ -23,5 +26,5 @@ if [ "$TERRAFORM_DESTROY" != "true" ]; then
         sed -e 's/ //g' -e 's/"//g' -e 's/\[\ */\[/g' -e 's/\ *\]/\]/g' \
         > $BO_OUT_PATH
 
-    [[ -n $DEBUG_MODE && $DEBUG_MODE == 'true' ]] && echo 'bo-out file:' && cat $BO_OUT_PATH
+    isDebugMode && echo 'bo-out file:' && cat $BO_OUT_PATH
 fi
