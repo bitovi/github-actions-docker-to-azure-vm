@@ -1,14 +1,14 @@
 #!/bin/bash
 # shellcheck disable=SC2086,SC1091
 
+SCRIPTS_PATH="$GITHUB_ACTION_PATH/operations/_scripts"
+OPS_ENV_PATH="$GITHUB_ACTION_PATH/operations/deployment"
+
 source "$SCRIPTS_PATH/deploy/deploy_helpers.sh"
 source "$SCRIPTS_PATH/generate/generate_helpers.sh"
 
 isDebugMode && set -x
 set -e
-
-SCRIPTS_PATH="$GITHUB_ACTION_PATH/operations/_scripts"
-OPS_ENV_PATH="$GITHUB_ACTION_PATH/operations/deployment"
 
 echo "::group::Deploy"
 GITHUB_REPO_NAME=$(echo "$GITHUB_REPOSITORY" | sed 's/^.*\///')

@@ -5,7 +5,7 @@
 # if it is 'None', then start a loop to wait for the vm to be provisioned
 
 # TODO: add a timeout
-inventory_yaml=$ENV_PATH/terraform/inventory.yaml
+inventory_yaml=$OPS_ENV_PATH/terraform/inventory.yaml
 
 yaml_vm_ip=$(cat $inventory_yaml | shyaml get-value bitops_servers.hosts)
 
