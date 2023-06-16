@@ -1,7 +1,10 @@
 #!/bin/bash
 # shellcheck disable=SC2086,SC1091
 
-[[ -n $DEBUG_MODE && $DEBUG_MODE == 'true' ]] && set -x
+source "$SCRIPTS_PATH/deploy/deploy_helpers.sh"
+source "$SCRIPTS_PATH/generate/generate_helpers.sh"
+
+isDebugMode && set -x
 set -e
 
 SCRIPTS_PATH="$GITHUB_ACTION_PATH/operations/_scripts"
@@ -24,7 +27,6 @@ export LB_LOGS_BUCKET
 
 $SCRIPTS_PATH/deploy/check_bucket_name.sh $LB_LOGS_BUCKET
 
-source "$SCRIPTS_PATH/generate/generate_helpers.sh"
 # Generate subdomain
 $SCRIPTS_PATH/generate/generate_subdomain.sh
 
@@ -50,15 +52,11 @@ $SCRIPTS_PATH/generate/generate_ansible_playbook.sh
 # cmd="ls -al $OPS_ENV_PATH/terraform/"
 # echo $cmd && $cmd
 
-cmd="cat $OPS_ENV_PATH/terraform/provider.tf"
-echo $cmd && $cmd
-
-# Prints out bitops.config.yaml
-cmd="cat $OPS_ENV_PATH/terraform/bitops.config.yaml"
-echo $cmd && $cmd
-
-cmd="ls $OPS_ENV_PATH/ansible/app/${GITHUB_REPO_NAME}"
-echo $cmd && $cmd
+if isDebugMode; then 
+  cmd="cat $OPS_ENV_PATH/terraform/provider.tf" && echo $cmd && $cmd
+  cmd="cat $OPS_ENV_PATH/terraform/bitops.config.yaml" && echo $cmd && $cmd
+  cmd="ls $OPS_ENV_PATH/ansible/app/${GITHUB_REPO_NAME}" && echo $cmd && $cmd
+fi
 
 TERRAFORM_COMMAND=""
 TERRAFORM_DESTROY=""

@@ -6,11 +6,10 @@
 
 # exit on any error
 set -e
-[[ -n $DEBUG_MODE && $DEBUG_MODE == 'true' ]] && set -x
-
-success=true
-
 source "$BITOPS_TEMPDIR/deployment/_scripts/az_cli_helpers.sh"
+source "$BITOPS_TEMPDIR/_scripts/deploy/deploy_helpers.sh"
+
+isDebugMode && set -x
 
 # TODO: elevate this into a shared script
 # avoid running this script if the Terraform CLI Action is `destroy`
@@ -43,6 +42,8 @@ fi
 # if so, skip creation
 # if it exists in another resource group, exit
 # if some other error, exit
+success=true
+
 check_storage=$(az storage account check-name --name $account) # json
 storage_available=$(echo $check_storage | jq -r .nameAvailable) # 'true' or 'false
 storage_reason=$(echo $check_storage | jq -r .reason) # 'AlreadyExists' or 'Invalid'
