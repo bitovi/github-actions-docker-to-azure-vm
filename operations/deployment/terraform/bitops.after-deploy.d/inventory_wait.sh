@@ -1,10 +1,13 @@
 #!/bin/bash
-# shellcheck disable=SC2086
+# shellcheck disable=SC2086,1091
 
 # check the generated inventory.yaml for the vm ips
 # if it is 'None', then start a loop to wait for the vm to be provisioned
 
 # TODO: add a timeout
+
+source "$SCRIPTS_PATH/deploy/deploy_helpers.sh"
+
 inventory_yaml=$OPS_ENV_PATH/terraform/inventory.yaml
 
 yaml_vm_ip=$(cat $inventory_yaml | shyaml get-value bitops_servers.hosts)

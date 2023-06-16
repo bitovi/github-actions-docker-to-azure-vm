@@ -48,11 +48,8 @@ $SCRIPTS_PATH/generate/generate_bitops_config.sh
 # Generate Ansible playbook
 $SCRIPTS_PATH/generate/generate_ansible_playbook.sh
 
-# List terraform folder
-# cmd="ls -al $OPS_ENV_PATH/terraform/"
-# echo $cmd && $cmd
-
-if isDebugMode; then 
+if isDebugMode; then
+  cmd="ls -al $OPS_ENV_PATH/terraform/" && echo $cmd && $cmd
   cmd="cat $OPS_ENV_PATH/terraform/provider.tf" && echo $cmd && $cmd
   cmd="cat $OPS_ENV_PATH/terraform/bitops.config.yaml" && echo $cmd && $cmd
   cmd="ls $OPS_ENV_PATH/ansible/app/${GITHUB_REPO_NAME}" && echo $cmd && $cmd
@@ -74,6 +71,8 @@ else
   echo "Running BitOps for env: $BITOPS_ENVIRONMENT"
 
   docker run --rm --name bitops \
+  -e SCRIPTS_PATH="$SCRIPTS_PATH" \
+  -e OPS_ENV_PATH="$OPS_ENV_PATH" \
   -e ARM_CLIENT_ID=$ARM_CLIENT_ID \
   -e ARM_CLIENT_SECRET=$ARM_CLIENT_SECRET \
   -e ARM_SUBSCRIPTION_ID=$ARM_SUBSCRIPTION_ID \

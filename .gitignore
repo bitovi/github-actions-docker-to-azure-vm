@@ -20,3 +20,5 @@ operations/deployment/terraform/inventory.yaml
 
 .vscode/
 operations/_scripts/deploy/deploy.local.sh
+
+operations/deployment/ansible/app
