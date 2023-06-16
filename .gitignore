@@ -16,7 +16,7 @@ operations/deployment/terraform/inventory.yaml
 
 *.pem
 
-*test*
+# *test*
 
 .vscode/
 operations/_scripts/deploy/deploy.local.sh
