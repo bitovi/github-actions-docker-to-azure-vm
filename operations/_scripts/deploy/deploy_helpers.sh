@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function isDebugMode() {
-  if [[ -n $DEBUG_MODE && $DEBUG_MODE == 'true' ]] || [ $DEBUG_MODE -eq 1 ] ; then
+  if [[ -n $DEBUG_MODE && $DEBUG_MODE == 'true' ]] || [ "$DEBUG_MODE" == '1' ] ; then
     return 0
   else
     return 1
