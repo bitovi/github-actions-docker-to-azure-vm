@@ -6,12 +6,12 @@
 
 # TODO: add a timeout
 
-source "$SCRIPTS_PATH/deploy/deploy_helpers.sh"
+source "$BITOPS_TEMPDIR/_scripts/deploy/deploy_helpers.sh"
 
 if isDestroyMode; then
   echo "Destroy mode. Skipping inventory wait."
 else
-  inventory_yaml=$OPS_ENV_PATH/terraform/inventory.yaml
+  inventory_yaml=$BITOPS_TEMPDIR/deployment/terraform/inventory.yaml
 
   yaml_vm_ip=$(cat $inventory_yaml | shyaml get-value bitops_servers.hosts)
 
