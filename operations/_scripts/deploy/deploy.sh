@@ -1,11 +1,21 @@
 #!/bin/bash
 # shellcheck disable=SC2086,SC1091
 
-SCRIPTS_PATH="$GITHUB_ACTION_PATH/operations/_scripts"
-OPS_ENV_PATH="$GITHUB_ACTION_PATH/operations/deployment"
+BITOPS_TEMP_DIR="$GITHUB_ACTION_PATH/operations"
 
-source "$SCRIPTS_PATH/deploy/deploy_helpers.sh"
-source "$SCRIPTS_PATH/generate/generate_helpers.sh"
+SCRIPTS_PATH="$BITOPS_TEMP_DIR/_scripts"
+DEPLOY_SCRIPTS_PATH="$SCRIPTS_PATH/deploy"
+GENERATE_SCRIPTS_PATH="$SCRIPTS_PATH/generate"
+
+OPS_REPO_ENV_NAME="deployment"
+OPS_ENV_PATH="$BITOPS_TEMP_DIR/$OPS_REPO_ENV_NAME"
+OPS_REPO_ANSIBLE_PATH="$OPS_ENV_PATH/ansible"
+OPS_REPO_TERRAFORM_PATH="$OPS_ENV_PATH/terraform"
+
+
+
+source "$DEPLOY_SCRIPTS_PATH/deploy_helpers.sh"
+source "$GENERATE_SCRIPTS_PATH/generate_helpers.sh"
 
 isDebugMode && set -x
 set -e
@@ -15,44 +25,44 @@ GITHUB_REPO_NAME=$(echo "$GITHUB_REPOSITORY" | sed 's/^.*\///')
 export GITHUB_REPO_NAME
 
 # Generate buckets identifiers and check them agains Azure Rules 
-TF_STATE_BUCKET="$($SCRIPTS_PATH/generate/generate_buckets_identifiers.sh tf | xargs)"
+TF_STATE_BUCKET="$($GENERATE_SCRIPTS_PATH/generate_buckets_identifiers.sh tf | xargs)"
 export TF_STATE_BUCKET
 
-source "$SCRIPTS_PATH/deploy/check_bucket_name.sh"
+source "$DEPLOY_SCRIPTS_PATH/check_bucket_name.sh"
 checkStorageName $AZURE_STORAGE_ACCOUNT azure
 checkContainerName $TF_STATE_BUCKET azure
 
-LB_LOGS_BUCKET="$($SCRIPTS_PATH/generate/generate_buckets_identifiers.sh lb | xargs)"
+LB_LOGS_BUCKET="$($GENERATE_SCRIPTS_PATH/generate_buckets_identifiers.sh lb | xargs)"
 export LB_LOGS_BUCKET
 
-$SCRIPTS_PATH/deploy/check_bucket_name.sh $LB_LOGS_BUCKET
+$DEPLOY_SCRIPTS_PATH/check_bucket_name.sh $LB_LOGS_BUCKET
 
 # Generate subdomain
-$SCRIPTS_PATH/generate/generate_subdomain.sh
+$GENERATE_SCRIPTS_PATH/generate_subdomain.sh
 
 # Generate the provider.tf file
-$SCRIPTS_PATH/generate/generate_provider.sh
+$GENERATE_SCRIPTS_PATH/generate_provider.sh
 
 # Generate terraform variables
-$SCRIPTS_PATH/generate/generate_tf_vars.sh
+$GENERATE_SCRIPTS_PATH/generate_tf_vars.sh
 
 # Generate dot_env
-$SCRIPTS_PATH/generate/generate_dot_env.sh
+$GENERATE_SCRIPTS_PATH/generate_dot_env.sh
 
 # Generate app repo
-$SCRIPTS_PATH/generate/generate_app_repo.sh
+$GENERATE_SCRIPTS_PATH/generate_app_repo.sh
 
 # Generate bitops config
-$SCRIPTS_PATH/generate/generate_bitops_config.sh
+$GENERATE_SCRIPTS_PATH/generate_bitops_config.sh
 
 # Generate Ansible playbook
-$SCRIPTS_PATH/generate/generate_ansible_playbook.sh
+$GENERATE_SCRIPTS_PATH/generate_ansible_playbook.sh
 
 if isDebugMode; then
-  cmd="ls -al $OPS_ENV_PATH/terraform/" && echo $cmd && $cmd
-  cmd="cat $OPS_ENV_PATH/terraform/provider.tf" && echo $cmd && $cmd
-  cmd="cat $OPS_ENV_PATH/terraform/bitops.config.yaml" && echo $cmd && $cmd
-  cmd="ls $OPS_ENV_PATH/ansible/app/${GITHUB_REPO_NAME}" && echo $cmd && $cmd
+  cmd="ls -al $OPS_REPO_TERRAFORM_PATH/" && echo $cmd && $cmd
+  cmd="cat $OPS_REPO_TERRAFORM_PATH/provider.tf" && echo $cmd && $cmd
+  cmd="cat $OPS_REPO_TERRAFORM_PATH/bitops.config.yaml" && echo $cmd && $cmd
+  cmd="ls $OPS_REPO_ANSIBLE_PATH/app/$GITHUB_REPO_NAME" && echo $cmd && $cmd
 fi
 
 TERRAFORM_COMMAND=""
@@ -70,32 +80,10 @@ else
   echo "::group::BitOps Execution"  
   echo "Running BitOps for env: $BITOPS_ENVIRONMENT"
 
-  docker run --rm --name bitops \
-  -e SCRIPTS_PATH="$SCRIPTS_PATH" \
-  -e OPS_ENV_PATH="$OPS_ENV_PATH" \
-  -e ARM_CLIENT_ID=$ARM_CLIENT_ID \
-  -e ARM_CLIENT_SECRET=$ARM_CLIENT_SECRET \
-  -e ARM_SUBSCRIPTION_ID=$ARM_SUBSCRIPTION_ID \
-  -e ARM_TENANT_ID=$ARM_TENANT_ID \
-  -e azure_resource_identifier=$azure_resource_identifier \
-  -e azure_vm_admin_username=$azure_vm_admin_username \
-  -e azure_vm_admin_password=$azure_vm_admin_password \
-  -e BITOPS_ENVIRONMENT="$BITOPS_ENVIRONMENT" \
-  -e SKIP_DEPLOY_TERRAFORM="$SKIP_DEPLOY_TERRAFORM" \
-  -e SKIP_DEPLOY_HELM="$SKIP_DEPLOY_HELM" \
-  -e BITOPS_TERRAFORM_COMMAND="$TERRAFORM_COMMAND" \
-  -e TERRAFORM_DESTROY="$TERRAFORM_DESTROY" \
-  -e ANSIBLE_SKIP_DEPLOY="$ANSIBLE_SKIP_DEPLOY" \
-  -e TF_STATE_BUCKET="$TF_STATE_BUCKET" \
-  -e TF_STATE_BUCKET_DESTROY="$TF_STATE_BUCKET_DESTROY" \
-  -e DEFAULT_FOLDER_NAME="_default" \
-  -e BITOPS_FAST_FAIL="$BITOPS_FAST_FAIL" \
-  -e AZURE_STORAGE_ACCOUNT="$AZURE_STORAGE_ACCOUNT" \
-  -e AZURE_STORAGE_SKU="$AZURE_STORAGE_SKU" \
-  -e AZURE_DEFAULT_REGION="$AZURE_DEFAULT_REGION" \
-  -e DEBUG_MODE="$DEBUG_MODE" \
-  -v "$GITHUB_ACTION_PATH/operations:/opt/bitops_deployment" \
-  bitovi/bitops:dev
+  docker run --name bitops \
+  --env-file .docker_env \
+  -v "$BITOPS_TEMP_DIR:/opt/bitops_deployment" \
+  bitovi/bitops:latest
 
   BITOPS_RESULT=$?
   echo "::endgroup::"
