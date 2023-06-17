@@ -1,7 +1,7 @@
 #!/bin/bash
 # shellcheck disable=SC2086,SC1091
 
-BITOPS_TEMP_DIR="$GITHUB_ACTION_PATH/operations"
+# BITOPS_TEMP_DIR="$GITHUB_ACTION_PATH/operations"
 
 SCRIPTS_PATH="$BITOPS_TEMP_DIR/_scripts"
 DEPLOY_SCRIPTS_PATH="$SCRIPTS_PATH/deploy"
@@ -11,8 +11,6 @@ OPS_REPO_ENV_NAME="deployment"
 OPS_ENV_PATH="$BITOPS_TEMP_DIR/$OPS_REPO_ENV_NAME"
 OPS_REPO_ANSIBLE_PATH="$OPS_ENV_PATH/ansible"
 OPS_REPO_TERRAFORM_PATH="$OPS_ENV_PATH/terraform"
-
-
 
 source "$DEPLOY_SCRIPTS_PATH/deploy_helpers.sh"
 source "$GENERATE_SCRIPTS_PATH/generate_helpers.sh"
@@ -81,7 +79,7 @@ else
   echo "Running BitOps for env: $BITOPS_ENVIRONMENT"
 
   docker run --name bitops \
-  --env-file .docker_env \
+  --env-file=./.docker_env \
   -v "$BITOPS_TEMP_DIR:/opt/bitops_deployment" \
   bitovi/bitops:latest
 
