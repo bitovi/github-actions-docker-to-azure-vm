@@ -5,10 +5,14 @@ echo "::group::Deploy"
 
 echo "deploy script running in: $(pwd)"
 
+# GITHUB_ACTION_PATH == root of repo
+# BITOPS_TEMP_DIR == root/operations/
+
+
 BITOPS_TEMP_DIR="$GITHUB_ACTION_PATH/operations"
 SCRIPTS_PATH="$BITOPS_TEMP_DIR/_scripts"
-DEPLOY_SCRIPTS_PATH="$BITOPS_TEMP_DIR/deploy"
-GENERATE_SCRIPTS_PATH="$BITOPS_TEMP_DIR/generate"
+DEPLOY_SCRIPTS_PATH="$SCRIPTS_PATH/deploy"
+GENERATE_SCRIPTS_PATH="$SCRIPTS_PATH/generate"
 
 source "$DEPLOY_SCRIPTS_PATH/deploy_helpers.sh"
 source "$GENERATE_SCRIPTS_PATH/generate_helpers.sh"
