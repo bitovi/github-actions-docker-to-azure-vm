@@ -1,5 +1,9 @@
 #!/bin/bash
+# shellcheck disable=SC1091
+
 # Export variables to GHA
+
+source "$BITOPS_TEMPDIR/_scripts/deploy/deploy_helpers.sh"
 
 BO_OUT="$GITHUB_ACTION_PATH/operations/bo-out.env"
 
