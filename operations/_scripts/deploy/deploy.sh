@@ -4,6 +4,8 @@
 # BITOPS_TEMP_DIR="$GITHUB_ACTION_PATH/operations"
 echo "::group::Deploy"
 
+pwd
+
 source "./deploy_helpers.sh"
 source "$GENERATE_SCRIPTS_PATH/generate_helpers.sh"
 isDebugMode && set -x
