@@ -3,6 +3,9 @@
 
 # BITOPS_TEMP_DIR="$GITHUB_ACTION_PATH/operations"
 
+isDebugMode && set -x
+set -e
+
 SCRIPTS_PATH="$BITOPS_TEMP_DIR/_scripts"
 DEPLOY_SCRIPTS_PATH="$SCRIPTS_PATH/deploy"
 GENERATE_SCRIPTS_PATH="$SCRIPTS_PATH/generate"
@@ -12,11 +15,8 @@ OPS_ENV_PATH="$BITOPS_TEMP_DIR/$OPS_REPO_ENV_NAME"
 OPS_REPO_ANSIBLE_PATH="$OPS_ENV_PATH/ansible"
 OPS_REPO_TERRAFORM_PATH="$OPS_ENV_PATH/terraform"
 
-source "$DEPLOY_SCRIPTS_PATH/deploy_helpers.sh"
+source "./deploy_helpers.sh"
 source "$GENERATE_SCRIPTS_PATH/generate_helpers.sh"
-
-isDebugMode && set -x
-set -e
 
 echo "::group::Deploy"
 GITHUB_REPO_NAME=$(echo "$GITHUB_REPOSITORY" | sed 's/^.*\///')
