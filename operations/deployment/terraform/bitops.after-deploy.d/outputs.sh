@@ -12,11 +12,11 @@
 #   The bo-out.env file is used by Ansible to populate variables passed on by Terraform
 # """
 
-# set -e
+set -e
 set -x
 
 source "$BITOPS_TEMPDIR/_scripts/deploy/deploy_helpers.sh"
-isDebugMode && set -x
+if isDebugMode; then set -x; fi
 
 BO_OUT_PATH=/opt/bitops_deployment/bo-out.env
 
@@ -26,5 +26,7 @@ if [ "$TERRAFORM_DESTROY" != "true" ]; then
     terraform output -json | jq -r 'to_entries[] | .key + "=" + (.value.value | tostring)' \
     | sed -e 's/ //g' -e 's/"//g' -e 's/\[\ */\[/g' -e 's/\ *\]/\]/g' > $BO_OUT_PATH
 
-    isDebugMode && echo 'bo-out file:' && cat $BO_OUT_PATH
+    if isDebugMode; then
+      echo 'bo-out file:' && cat $BO_OUT_PATH
+    fi
 fi
