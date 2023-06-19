@@ -79,8 +79,10 @@ else
   echo "::group::BitOps Execution"  
   echo "Running BitOps for env: $BITOPS_ENVIRONMENT"
 
+
+
   docker run --name bitops \
-  --env-file=./.docker_env \
+  --env-file $DEPLOY_SCRIPTS_PATH/.docker_env \
   -v "$BITOPS_TEMP_DIR:/opt/bitops_deployment" \
   bitovi/bitops:latest
 
