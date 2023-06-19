@@ -2,7 +2,10 @@
 # shellcheck disable=SC2086,SC1091
 
 # BITOPS_TEMP_DIR="$GITHUB_ACTION_PATH/operations"
+echo "::group::Deploy"
 
+source "./deploy_helpers.sh"
+source "$GENERATE_SCRIPTS_PATH/generate_helpers.sh"
 isDebugMode && set -x
 set -e
 
@@ -15,10 +18,6 @@ OPS_ENV_PATH="$BITOPS_TEMP_DIR/$OPS_REPO_ENV_NAME"
 OPS_REPO_ANSIBLE_PATH="$OPS_ENV_PATH/ansible"
 OPS_REPO_TERRAFORM_PATH="$OPS_ENV_PATH/terraform"
 
-source "./deploy_helpers.sh"
-source "$GENERATE_SCRIPTS_PATH/generate_helpers.sh"
-
-echo "::group::Deploy"
 GITHUB_REPO_NAME=$(echo "$GITHUB_REPOSITORY" | sed 's/^.*\///')
 export GITHUB_REPO_NAME
 
