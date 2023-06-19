@@ -2,10 +2,14 @@
 # shellcheck disable=SC1091,SC2086
 
 # Export variables to GHA
+# BitOps has finished at this point and we are out of scope of the deploy script
+# We're back in action.yaml.
+# So a lot of the variables are out of scope.
+# Only the Github variables are available.
 
 set -e
 
-source "$BITOPS_TEMPDIR/_scripts/deploy/deploy_helpers.sh"
+source "$GITHUB_ACTION_PATH/operations/_scripts/deploy/deploy_helpers.sh"
 
 BO_OUT="$GITHUB_ACTION_PATH/operations/bo-out.env"
 

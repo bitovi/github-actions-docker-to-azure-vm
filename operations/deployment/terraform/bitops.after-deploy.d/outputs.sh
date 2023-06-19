@@ -13,7 +13,6 @@
 # """
 
 set -e
-set -x
 
 source "$BITOPS_TEMPDIR/_scripts/deploy/deploy_helpers.sh"
 if isDebugMode; then set -x; fi
