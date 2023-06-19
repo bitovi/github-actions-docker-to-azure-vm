@@ -1,14 +1,14 @@
 #!/bin/bash
 # shellcheck disable=SC2086,SC1091
 
-# BITOPS_TEMP_DIR="$GITHUB_ACTION_PATH/operations"
 echo "::group::Deploy"
 
-pwd
+echo "deploy script running in: $(pwd)"
 
-SCRIPTS_PATH="$GITHUB_ACTION_PATH/operations/_scripts"
-DEPLOY_SCRIPTS_PATH="$SCRIPTS_PATH/deploy"
-GENERATE_SCRIPTS_PATH="$SCRIPTS_PATH/generate"
+BITOPS_TEMP_DIR="$GITHUB_ACTION_PATH/operations"
+SCRIPTS_PATH="$BITOPS_TEMP_DIR/_scripts"
+DEPLOY_SCRIPTS_PATH="$BITOPS_TEMP_DIR/deploy"
+GENERATE_SCRIPTS_PATH="$BITOPS_TEMP_DIR/generate"
 
 source "$DEPLOY_SCRIPTS_PATH/deploy_helpers.sh"
 source "$GENERATE_SCRIPTS_PATH/generate_helpers.sh"
@@ -16,7 +16,7 @@ isDebugMode && set -x
 set -e
 
 OPS_REPO_ENV_NAME="deployment"
-OPS_ENV_PATH="operations/$OPS_REPO_ENV_NAME"
+OPS_ENV_PATH="$BITOPS_TEMP_DIR/$OPS_REPO_ENV_NAME"
 OPS_REPO_ANSIBLE_PATH="$OPS_ENV_PATH/ansible"
 OPS_REPO_TERRAFORM_PATH="$OPS_ENV_PATH/terraform"
 
