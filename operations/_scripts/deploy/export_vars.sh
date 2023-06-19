@@ -1,7 +1,9 @@
 #!/bin/bash
-# shellcheck disable=SC1091
+# shellcheck disable=SC1091,SC2086
 
 # Export variables to GHA
+
+set -e
 
 source "$BITOPS_TEMPDIR/_scripts/deploy/deploy_helpers.sh"
 
