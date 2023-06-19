@@ -6,7 +6,7 @@ echo "::group::Deploy"
 
 pwd
 
-SCRIPTS_PATH='operations/_scripts'
+SCRIPTS_PATH="$GITHUB_ACTION_PATH/operations/_scripts"
 DEPLOY_SCRIPTS_PATH="$SCRIPTS_PATH/deploy"
 GENERATE_SCRIPTS_PATH="$SCRIPTS_PATH/generate"
 
