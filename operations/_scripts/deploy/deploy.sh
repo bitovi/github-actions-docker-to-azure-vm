@@ -37,6 +37,7 @@ export LB_LOGS_BUCKET
 
 $DEPLOY_SCRIPTS_PATH/check_bucket_name.sh $LB_LOGS_BUCKET
 
+source "$SCRIPTS_PATH/generate/generate_helpers.sh"
 # Generate subdomain
 $GENERATE_SCRIPTS_PATH/generate_subdomain.sh
 
