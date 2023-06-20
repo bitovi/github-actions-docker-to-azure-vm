@@ -1,4 +1,5 @@
 #!/bin/bash
+# shellcheck disable=SC1091
 
 # """
 # What
@@ -12,16 +13,23 @@
 # """
 
 set -e
-[[ -n $DEBUG_MODE && $DEBUG_MODE == 'true' ]] && set -x
 
-BO_OUT_PATH=/opt/bitops_deployment/bo-out.env
+source "$BITOPS_TEMPDIR/_scripts/deploy/deploy_helpers.sh"
+if isDebugMode; then set -x; fi
 
-if [ "$TERRAFORM_DESTROY" != "true" ]; then
-    echo "In after hook - $(basename $0)"
-    # The sed command removes spaces, double quotes, and spaces before/after brackets
-    terraform output -json | jq -r 'to_entries[] | .key + "=" + (.value.value | tostring)' | \
-        sed -e 's/ //g' -e 's/"//g' -e 's/\[\ */\[/g' -e 's/\ *\]/\]/g' \
-        > $BO_OUT_PATH
+if isDestroyMode; then 
+  echo "In destroy mode. Skipping outputs.sh"
+else  
+  BO_OUT_PATH=/opt/bitops_deployment/bo-out.env
 
-    [[ -n $DEBUG_MODE && $DEBUG_MODE == 'true' ]] && echo 'bo-out file:' && cat $BO_OUT_PATH
+  if [ "$TERRAFORM_DESTROY" != "true" ]; then
+      echo "In after hook - $(basename $0)"
+      # The sed command removes spaces, double quotes, and spaces before/after brackets
+      terraform output -json | jq -r 'to_entries[] | .key + "=" + (.value.value | tostring)' \
+      | sed -e 's/ //g' -e 's/"//g' -e 's/\[\ */\[/g' -e 's/\ *\]/\]/g' > $BO_OUT_PATH
+
+      if isDebugMode; then
+        echo 'bo-out file:' && cat $BO_OUT_PATH
+      fi
+  fi
 fi

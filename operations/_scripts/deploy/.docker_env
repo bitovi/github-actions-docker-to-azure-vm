@@ -1,0 +1,29 @@
+# this was key for understanding .envfile synax:
+# This file should use the syntax `<variable>=value` (which sets the variable to the given value) 
+# or <variable> (which takes the value from the local environment), and # for comments.
+# In other words, don't do `VAR1=$SOME_OTHER_ENV_VAR`
+# https://docs.docker.com/engine/reference/commandline/run/#set-environment-variables--e---env---env-file
+#
+# This file sets environment variables for the running bitops docker container
+# 
+ARM_CLIENT_ID
+ARM_CLIENT_SECRET
+ARM_SUBSCRIPTION_ID
+ARM_TENANT_ID
+azure_resource_identifier
+azure_vm_admin_username
+azure_vm_admin_password
+AZURE_STORAGE_ACCOUNT
+AZURE_STORAGE_SKU
+AZURE_DEFAULT_REGION
+TF_STATE_BUCKET_DESTROY
+BITOPS_ENVIRONMENT
+SKIP_DEPLOY_TERRAFORM
+BITOPS_TERRAFORM_COMMAND
+TERRAFORM_DESTROY
+TF_STATE_BUCKET
+ANSIBLE_SKIP_DEPLOY
+SKIP_DEPLOY_HELM
+BITOPS_FAST_FAIL
+DEBUG_MODE
+DEFAULT_FOLDER_NAME="_default"

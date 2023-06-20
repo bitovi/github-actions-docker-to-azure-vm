@@ -9,7 +9,8 @@ GITHUB_REPO_NAME=$(echo "$GITHUB_REPOSITORY" | sed 's/^.*\///')
 
 ANSIBLE_DEPLOYMENT_PATH="$GITHUB_ACTION_PATH/operations/deployment/ansible/app/$GITHUB_REPO_NAME"
 
-echo "Copying files from GITHUB_WORKSPACE '$GITHUB_WORKSPACE' to ops repo's Ansible deployment '$ANSIBLE_DEPLOYMENT_PATH'"
+echo "Copying files from GITHUB_WORKSPACE:  '$GITHUB_WORKSPACE'"
+echo "to ops repo's Ansible deployment dir: '$ANSIBLE_DEPLOYMENT_PATH'"
 mkdir -p "$ANSIBLE_DEPLOYMENT_PATH"
 
 TARGET_PATH="$GITHUB_WORKSPACE"
