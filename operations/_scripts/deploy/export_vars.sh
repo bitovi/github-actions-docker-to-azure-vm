@@ -9,6 +9,8 @@
 
 set -e
 
+echo ::group::Export Vars
+
 source "$GITHUB_ACTION_PATH/operations/_scripts/deploy/deploy_helpers.sh"
 
 BO_OUT="$GITHUB_ACTION_PATH/operations/bo-out.env"
