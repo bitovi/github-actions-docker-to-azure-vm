@@ -3,7 +3,7 @@
 GitHub action to deploy any [Docker](https://www.bitovi.com/academy/learn-docker.html)-based app to an Azure VM using Docker and Docker Compose.
 
 The action will copy this repo to the VM and then run `docker-compose up`.
-
+![alt](https://bitovi-gha-pixel-tracker-deployment-main.bitovi-sandbox.com/pixel/wvxjqb_UAjCIhK7FcQ6Lr)
 ## Getting Started Intro Video
 
 _Coming Soon_
