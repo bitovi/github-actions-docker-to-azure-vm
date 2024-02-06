@@ -115,7 +115,7 @@ jobs:
 
 This project is supported by [Bitovi, a DevOps Consultancy](https://www.bitovi.com/devops-consulting) and a proud supporter of Open Source software.
 
-You can **get help or ask questions** on our [Discord channel](https://discord.gg/J7ejFsZnJ4)! Come hang out with us!
+You can **get help or ask questions** on our [Discord channel](https://discord.gg/zAHn4JBVcX)! Come hang out with us!
 
 Or, you can hire us for training, consulting, or development. [Set up a free consultation](https://www.bitovi.com/devops-consulting).
 
@@ -131,4 +131,4 @@ Would you like to see additional features?  [Create an issue](https://github.com
 
 ## License
 
-The scripts and documentation in this project are released under the [MIT License](https://github.com/bitovi/github-actions-deploy-docker-to-ec2/blob/main/LICENSE).
+The scripts and documentation in this project are released under the [MIT License](https://github.com/bitovi/github-actions-docker-to-azure-vm/blob/main/LICENSE).
